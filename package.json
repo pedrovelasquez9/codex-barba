@@ -1,0 +1,32 @@
+{
+  "name": "codex-barba",
+  "version": "1.0.0",
+  "description": "A retro 8-bit style blog built with Astro, featuring Markdown content and styled with NES.css for a nostalgic gaming aesthetic.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^4.10.1",
+    "@astrojs/mdx": "^2.0.0",
+    "nes.css": "^2.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "astro",
+    "static-site",
+    "markdown",
+    "nes.css",
+    "retro",
+    "8-bit",
+    "pixel-art",
+    "nostalgic",
+    "gaming"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

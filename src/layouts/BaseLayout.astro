@@ -1,0 +1,277 @@
+---
+// BaseLayout.astro
+import SideMenu from "../components/SideMenu.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  showSideMenu?: boolean;
+}
+
+const {
+  title,
+  description = "Una wiki retro hecha con café, Astro y NES.css por Programación en español.",
+  showSideMenu = true,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Codex Barba</title>
+    <meta name="description" content={description} />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo 8bit.webp" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo 8bit.webp" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/logo 8bit.webp" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#212529" />
+    <!-- NES.css CDN -->
+    <link
+      href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css"
+      rel="stylesheet"
+    />
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Press Start 2P";
+        padding: 0.5rem;
+        background-color: #212529;
+        color: #fff;
+      }
+
+      /* Secondary font for better readability */
+      .readable-text {
+        font-family: "VT323", monospace;
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+      }
+
+      /* Add readable text for all heading tags inside main-content */
+      .main-content h1,
+      .main-content h2,
+      .main-content h3,
+      .main-content h4,
+      .main-content h5,
+      .main-content h6 {
+        font-family: "Press Start 2P";
+        line-height: 1.4;
+      }
+
+      .main-content p,
+      .main-content li,
+      .main-content a {
+        font-family: "VT323", monospace;
+        font-size: 1.4rem;
+        line-height: 1.4;
+        letter-spacing: 0.5px;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1rem; /* Standardized base gap for padding */
+        box-sizing: border-box;
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      @media (min-width: 576px) {
+        .container {
+          padding: 1rem;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .container {
+          padding: 1.5rem;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .container {
+          padding: 2rem;
+        }
+      }
+
+      .layout-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem; /* Base gap updated for better consistency */
+        max-width: 100%;
+        margin-top: 0.75rem;
+        flex-grow: 1;
+        min-height: 0; /* Allow grid to grow with content */
+        height: 100%; /* Ensure the grid takes full height */
+      }
+
+      @media (min-width: 768px) {
+        .layout-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem; /* Ensure consistency with gap sizes */
+        }
+      }
+
+      @media (min-width: 992px) {
+        .layout-grid {
+          grid-template-columns: 1fr 3fr;
+        }
+      }
+
+      .side-column {
+        overflow-x: hidden;
+        min-width: 0;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto; /* Allow scrolling */
+      }
+
+      .main-column {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        overflow-y: auto; /* Allow scrolling */
+      }
+
+      .main-content {
+        min-width: 0;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        flex-grow: 1;
+        margin-bottom: 1rem;
+        overflow: hidden; /* Ensure scrollability */
+      }
+
+      header {
+        margin-bottom: 1.5rem;
+        width: auto;
+      }
+
+      @media (min-width: 768px) {
+        header {
+          margin-bottom: 2rem;
+        }
+      }
+      footer {
+        margin-top: 1.5rem;
+        text-align: center;
+        font-size: 0.8rem;
+      }
+
+      @media (min-width: 768px) {
+        footer {
+          margin-top: 2.5rem;
+        }
+      }
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        align-items: center;
+      }
+      .nav-links a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      /* Fix NES.css button text visibility */
+      .nes-btn {
+        color: #212529 !important; /* Dark text on light buttons */
+        font-weight: bold;
+      }
+
+      .nes-btn.is-primary,
+      .nes-btn.is-success,
+      .nes-btn.is-warning,
+      .nes-btn.is-error {
+        color: #fff !important; /* Light text on dark buttons */
+      }
+
+      /* Custom button styles */
+      .nes-btn.is-dark {
+        background-color: #212529;
+        color: #fff !important;
+        border-color: #fff;
+      }
+
+      /* Override some NES.css defaults for better readability */
+      .nes-container.is-dark {
+        border-color: #adafbc;
+      }
+
+      .title-logo {
+        width: 50px;
+        height: auto;
+        vertical-align: middle;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="layout-grid">
+        <div class="side-column">
+          {showSideMenu && <SideMenu />}
+        </div>
+
+        <div class="main-column">
+          <header class="nes-container is-dark with-title">
+            <p class="title">Codex Barba</p>
+            <nav class="nav-links">
+              <a href="/"
+                ><img
+                  src="logo 8bit beard.webp"
+                  alt="codex barbas"
+                  class="title-logo"
+                /></a
+              >
+              <a href="/" class="nes-btn is-dark">Inicio</a>
+              <a href="/blog" class="nes-btn is-dark">Blog</a>
+              <a href="/about" class="nes-btn is-dark">Acerca de</a>
+            </nav>
+          </header>
+
+          <main class="main-content nes-container is-dark">
+            <slot />
+          </main>
+
+          <footer class="nes-container is-dark">
+            <p class="readable-text">
+              &copy; {new Date().getFullYear()} Codex Barba. Por <a
+                href="https://programacion-es.dev">Programación en español</a
+              >.
+            </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

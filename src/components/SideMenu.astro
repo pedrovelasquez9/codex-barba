@@ -1,0 +1,617 @@
+---
+import { getCollection } from "astro:content";
+
+// Define programming categories
+type ProgrammingCategory =
+  | "JavaScript"
+  | "TypeScript"
+  | "Git"
+  | "Clean code"
+  | "IA"
+  | "Desarrollo Web"
+  | "Angular"
+  | "React"
+  | "Svelte"
+  | "Vue"
+  | "Astro"
+  | "Node.js"
+  | "Soft skills"
+  | "Documentación de Software"
+  | "Algoritmos y Estructuras de Datos"
+  | "Arquitectura de Software";
+
+// Get all published posts
+const allPosts = await getCollection("posts", ({ data }) => {
+  return !data.draft;
+});
+
+// Function to extract categories from tags
+function getCategoryFromTags(
+  tags: string[] | undefined
+): ProgrammingCategory[] {
+  if (!tags) return [];
+
+  const categoryMap: Record<string, ProgrammingCategory> = {
+    javascript: "JavaScript",
+    typescript: "TypeScript",
+    git: "Git",
+    "clean code": "Clean code",
+    ia: "IA",
+    "desarrollo web": "Desarrollo Web",
+    angular: "Angular",
+    react: "React",
+    svelte: "Svelte",
+    vue: "Vue",
+    astro: "Astro",
+    nodejs: "Node.js",
+    "soft skills": "Soft skills",
+    "documentación de software": "Documentación de Software",
+    "algoritmos y estructuras de datos": "Algoritmos y Estructuras de Datos",
+    arquitectura: "Arquitectura de Software",
+  };
+
+  return tags
+    .map((tag) => categoryMap[tag.toLowerCase()])
+    .filter((category): category is ProgrammingCategory => !!category);
+}
+
+// Group posts by category
+const postsByCategory = new Map<ProgrammingCategory, typeof allPosts>();
+
+// Initialize categories
+const allCategories: ProgrammingCategory[] = [
+  "JavaScript",
+  "TypeScript",
+  "Git",
+  "Clean code",
+  "IA",
+  "Desarrollo Web",
+  "Angular",
+  "React",
+  "Svelte",
+  "Vue",
+  "Astro",
+  "Node.js",
+  "Soft skills",
+  "Documentación de Software",
+  "Algoritmos y Estructuras de Datos",
+  "Arquitectura de Software",
+];
+
+// Initialize empty arrays for each category
+allCategories.forEach((category) => {
+  postsByCategory.set(category, []);
+});
+
+// Populate categories
+allPosts.forEach((post) => {
+  const categories = getCategoryFromTags(post.data.tags);
+
+  // If no categories found, skip
+  if (categories.length === 0) return;
+
+  // Add post to each category it belongs to
+  categories.forEach((category) => {
+    const postsInCategory = postsByCategory.get(category) || [];
+    postsByCategory.set(category, [...postsInCategory, post]);
+  });
+});
+
+// Sort categories by post count (most posts first)
+const sortedCategories = [...postsByCategory.entries()]
+  .sort((a, b) => b[1].length - a[1].length)
+  .map(([category]) => category);
+
+// Category colors map
+const categoryColors: Record<
+  ProgrammingCategory,
+  { bg: string; text: string }
+> = {
+  JavaScript: { bg: "#f7df1e", text: "#000000" },
+  TypeScript: { bg: "#3178c6", text: "#ffffff" },
+  Git: { bg: "#f1502f", text: "#ffffff" },
+  "Clean code": { bg: "#333333", text: "#ffffff" },
+  IA: { bg: "#00bfff", text: "#ffffff" },
+  "Desarrollo Web": { bg: "#e44d26", text: "#ffffff" },
+  Angular: { bg: "#dd1b16", text: "#ffffff" },
+  React: { bg: "#61dafb", text: "#000000" },
+  Svelte: { bg: "#ff3e00", text: "#ffffff" },
+  Vue: { bg: "#42b883", text: "#ffffff" },
+  Astro: { bg: "#ff5c00", text: "#ffffff" },
+  "Node.js": { bg: "#8cc84b", text: "#ffffff" },
+  "Soft skills": { bg: "#f9c74f", text: "#000000" },
+  "Documentación de Software": { bg: "#f94144", text: "#ffffff" },
+  "Algoritmos y Estructuras de Datos": { bg: "#577590", text: "#ffffff" },
+  "Arquitectura de Software": { bg: "#43aa8b", text: "#ffffff" },
+};
+---
+
+<div class="menu-toggle-wrapper">
+  <button id="sideMenuToggle" class="menu-toggle-btn" aria-label="Toggle menu">
+    <i id="sideMenuIcon" class="nes-icon is-small star"></i>
+  </button>
+</div>
+
+<aside id="sideMenu" class="side-menu nes-container is-dark">
+  <p class="title categories-title">Categories</p>
+
+  <div class="categories-list">
+    {
+      sortedCategories.map((category) => {
+        const posts = postsByCategory.get(category) || [];
+        if (posts.length === 0) return null;
+        const color = categoryColors[category];
+
+        return (
+          <div class="category-section">
+            <div class="category-header">
+              <div class="category-toggle">
+                <span
+                  class="category-color-indicator"
+                  style={`background-color: ${color.bg}; color: ${color.text};`}
+                  data-checked="true"
+                />
+                <span class="category-name readable-text">{category}</span>
+                <span class="post-count">({posts.length})</span>
+              </div>
+            </div>
+
+            <div class="category-posts">
+              <div class="category-posts-inner">
+                <ul class="post-list">
+                  {posts.map((post) => (
+                    <li class="post-item">
+                      <a href={`/${post.slug}`} class="post-link">
+                        <span class="post-title readable-text">
+                          {post.data.title}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  {
+    allPosts.length === 0 && (
+      <p class="no-posts nes-text is-disabled">Todavía no hay publicaciones.</p>
+    )
+  }
+</aside>
+
+<script>
+  // Add toggle functionality
+  document.addEventListener("DOMContentLoaded", () => {
+    // Menu toggle functionality for mobile/tablet
+    const menuToggleBtn = document.getElementById("sideMenuToggle");
+    const sideMenu = document.getElementById("sideMenu");
+    const sideMenuIcon = document.getElementById("sideMenuIcon");
+
+    if (menuToggleBtn && sideMenu && sideMenuIcon) {
+      menuToggleBtn.addEventListener("click", () => {
+        sideMenu.classList.toggle("active");
+        menuToggleBtn.classList.toggle("active");
+        sideMenuIcon.classList.toggle("close");
+      });
+    }
+
+    // Handle closing menu when clicking outside on mobile/tablet
+    document.addEventListener("click", (event) => {
+      const target = event.target as Node;
+      const isSmallScreen = window.innerWidth <= 768;
+
+      if (isSmallScreen && sideMenu && menuToggleBtn) {
+        if (!sideMenu.contains(target) && !menuToggleBtn.contains(target)) {
+          sideMenu.classList.remove("active");
+          menuToggleBtn.classList.remove("active");
+        }
+      }
+    });
+
+    // Toggle functionality for categories
+    const toggles = document.querySelectorAll(".category-toggle");
+
+    toggles.forEach((toggle) => {
+      const indicator = toggle.querySelector(
+        ".category-color-indicator"
+      ) as HTMLElement;
+      const categorySection = toggle.closest(".category-section");
+      const categoryPosts = categorySection?.querySelector(".category-posts");
+
+      toggle.addEventListener("click", () => {
+        const isChecked = indicator?.getAttribute("data-checked") === "true";
+
+        // Update indicator state
+        if (indicator) {
+          if (isChecked) {
+            indicator.setAttribute("data-checked", "false");
+            indicator.style.filter = "brightness(0.7)";
+          } else {
+            indicator.setAttribute("data-checked", "true");
+            indicator.style.filter = "brightness(1.2)";
+          }
+        }
+
+        // Toggle category posts visibility
+        if (categoryPosts) {
+          if (isChecked) {
+            categoryPosts.classList.add("hidden");
+          } else {
+            categoryPosts.classList.remove("hidden");
+          }
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Menu toggle button styles */
+  .nes-icon.close::before {
+    color: #fff !important;
+  }
+  .menu-toggle-wrapper {
+    display: none; /* Hidden by default on desktop */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    width: auto;
+  }
+
+  .menu-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #212529;
+    border: 2px solid #adafbc;
+    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  .menu-toggle-btn:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.7);
+    border-color: #c1c3d1;
+  }
+
+  .menu-toggle-btn.active {
+    background-color: #333;
+    border-color: #c1c3d1;
+    transform: scale(0.95);
+  }
+
+  /* Ensure the NES icon is properly displayed */
+  .menu-toggle-btn .nes-icon {
+    transform: scale(1.2);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .menu-toggle-btn.active .nes-icon {
+    filter: brightness(1.2);
+    transform: scale(1.2);
+  }
+
+  /* Side menu styles */
+  .side-menu {
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    padding: 1rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    max-width: 100%;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease,
+      max-height 0.3s ease;
+  }
+
+  /* Title styles for desktop only */
+  .side-menu .categories-title {
+    margin-bottom: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background-color: #212529;
+    display: block;
+  }
+
+  /* Ensure proper margin/padding for categories list */
+  .side-menu.is-dark:not(.with-title) .categories-list {
+    margin-top: 0;
+    padding-top: 0.25rem;
+  }
+
+  .categories-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.25rem 0;
+    width: 100%;
+  }
+
+  /* Category section */
+  .category-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .category-header {
+    background-color: #333;
+    border-radius: 4px;
+    padding: 0.3rem 0.4rem;
+    border: 2px solid #adafbc;
+    margin-bottom: 0.7rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .category-header:hover {
+    background-color: #444;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .category-toggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .category-color-indicator {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    margin-right: 0.75rem;
+    border: 2px solid #adafbc;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: 0 0 5px rgba(173, 175, 188, 0.5);
+  }
+
+  /* Instead of checkmark, use a brightness change to indicate open/closed */
+  .category-color-indicator[data-checked="true"] {
+    filter: brightness(1.2);
+  }
+
+  .category-color-indicator[data-checked="false"] {
+    filter: brightness(0.7);
+  }
+
+  .category-name {
+    margin-left: 0.25rem;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.6rem;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-wrap: auto;
+  }
+
+  .post-count {
+    margin-left: 0.5rem;
+    color: #adafbc;
+    font-size: 0.5rem;
+  }
+
+  /* Post lists */
+  .category-posts {
+    margin-left: 0.75rem;
+    transition: all 0.3s ease-out;
+    overflow: hidden;
+    max-height: 2000px; /* Very large value to accommodate any content */
+  }
+
+  .category-posts.hidden {
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    padding: 0;
+  }
+
+  .category-posts-inner {
+    background-color: #333 !important;
+    border-color: #adafbc !important;
+    padding: 0.5rem !important;
+    margin-top: 0.5rem;
+    overflow-x: hidden;
+    border-radius: 4px !important;
+  }
+
+  .post-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-item {
+    margin-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(173, 175, 188, 0.2);
+    padding-bottom: 0.2rem;
+  }
+
+  .post-item:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .post-link {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0.2rem;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+    border-left: 3px solid rgba(173, 175, 188, 0.2);
+  }
+
+  .post-title {
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.7rem;
+    text-wrap: auto;
+    line-height: 1.2;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+  }
+
+  .post-link:hover {
+    transform: translateX(3px);
+    border-left-color: #adafbc;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .no-posts {
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  /* Custom checkbox styling */
+  .nes-checkbox + span {
+    color: #fff;
+  }
+
+  /* Retro scrollbars */
+  .categories-list::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .categories-list::-webkit-scrollbar-track {
+    background: #212529;
+    border: 2px solid #adafbc;
+  }
+
+  .categories-list::-webkit-scrollbar-thumb {
+    background: #adafbc;
+    border: 2px solid #212529;
+    image-rendering: pixelated;
+  }
+
+  /* Media queries for responsive behavior */
+  @media (max-width: 1024px) {
+    /* Tablet and below */
+    .menu-toggle-wrapper {
+      display: flex;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      z-index: 1000;
+      background-color: #212529;
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.7);
+      transform: translateX(-105%);
+      opacity: 0;
+      overflow-y: auto;
+      padding: 0.75rem 1rem 1rem 1rem;
+      transition:
+        transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        opacity 0.3s ease;
+    }
+
+    /* Remove the title completely in mobile/tablet view */
+    .side-menu .categories-title {
+      display: none;
+    }
+
+    /* Adjust spacing since title is hidden */
+    .side-menu .categories-list {
+      margin-top: 45px !important;
+      padding-top: 0.5rem !important;
+    }
+
+    .side-menu.active {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    /* Add a backdrop when menu is active */
+    .side-menu.active::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    /* Adjust scrollbar in mobile view */
+    .categories-list {
+      max-height: calc(100vh - 3rem);
+    }
+  }
+
+  @media (max-width: 576px) {
+    /* Mobile */
+    .side-menu {
+      width: 85%;
+    }
+
+    .menu-toggle-btn {
+      width: 38px;
+      height: 38px;
+    }
+
+    .menu-toggle-wrapper {
+      top: 12px;
+      left: 12px;
+    }
+
+    .menu-toggle-btn .nes-icon {
+      transform: scale(1);
+    }
+
+    .menu-toggle-btn.active .nes-icon {
+      transform: scale(1) rotate(45deg);
+    }
+
+    /* Fine-tune the positioning and spacing for mobile */
+    .side-menu {
+      padding-top: 0.75rem;
+    }
+
+    .categories-list {
+      margin-top: 0 !important;
+      padding-top: 0.25rem !important;
+    }
+  }
+</style>

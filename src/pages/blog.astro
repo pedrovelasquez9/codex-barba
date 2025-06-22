@@ -1,0 +1,81 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import SideMenu from "../components/SideMenu.astro";
+
+// Get all published blog posts, sorted by date
+const allPosts = await getCollection("posts", ({ data }) => {
+  return !data.draft;
+});
+
+// Sort posts by publishDate in descending order
+const posts = allPosts.sort((a, b) => {
+  const dateA = a.data.publishDate || new Date(0);
+  const dateB = b.data.publishDate || new Date(0);
+  return dateB.getTime() - dateA.getTime();
+});
+---
+
+<BaseLayout title="Blog">
+  <SideMenu slot="side-menu" />
+  <section class="nes-container is-dark with-title">
+    <p class="title">Blog</p>
+
+    {
+      posts.length > 0 ? (
+        <div class="posts-grid">
+          {posts.map((post) => (
+            <div class="post-card nes-container is-dark with-title">
+              <p class="title">{post.data.title}</p>
+
+              {post.data.image && (
+                <img
+                  src={post.data.image}
+                  alt={post.data.title}
+                  class="post-image"
+                  style="image-rendering: pixelated; width: 100%; margin-bottom: 1rem;"
+                />
+              )}
+
+              <p>{post.data.description}</p>
+
+              {post.data.publishDate && (
+                <p class="nes-text is-disabled">
+                  {post.data.publishDate.toLocaleDateString()}
+                </p>
+              )}
+
+              <a
+                href={`/${post.slug}`}
+                class="nes-btn is-primary"
+                style="margin-top: 1rem;"
+              >
+                Leer entrada
+              </a>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>No hay entradas recientes, vuelve más tarde =)</p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .post-card a {
+    margin-top: auto;
+  }
+</style>

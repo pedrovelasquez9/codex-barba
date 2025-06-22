@@ -1,0 +1,95 @@
+---
+import { getCollection, getEntryBySlug } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SideMenu from "../components/SideMenu.astro";
+
+// Define the static paths for all blog posts
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+// Get the post from the props
+const { post }: any = Astro.props;
+
+// Get the rendered content
+const { Content }: any = await post.render();
+---
+
+<BaseLayout title={post?.data?.title} description={post?.data?.description}>
+  <SideMenu slot="side-menu" />
+  <article class="nes-container is-dark with-title">
+    <p class="title">{post?.data?.title}</p>
+
+    <div class="post-meta">
+      <span class="nes-text is-primary">
+        Posted on: {post?.data?.publishDate?.toLocaleDateString()}
+      </span>
+      {
+        post?.data?.tags && (
+          <div class="tags" style="margin-top: 1rem;">
+            {post?.data?.tags.map((tag: string) => (
+              <span class="nes-badge">
+                <span class="is-primary">{tag}</span>
+              </span>
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    <div class="post-content" style="margin-top: 2rem;">
+      <Content />
+    </div>
+
+    <a href="/" class="nes-btn" style="margin-top: 2rem;">← Ir al inicio</a>
+  </article>
+</BaseLayout>
+
+<style>
+  .nes-badge span {
+    width: auto;
+  }
+
+  .post-meta {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 4px solid #444;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .post-content {
+    line-height: 1.6;
+  }
+
+  .post-content :global(h1),
+  .post-content :global(h2),
+  .post-content :global(h3) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(img) {
+    max-width: 100%;
+    image-rendering: pixelated;
+  }
+
+  .post-content :global(pre) {
+    background-color: #000;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import SideMenu from "../components/SideMenu.astro";
+
+// Get all blog posts from the content collection
+const posts = await getCollection("posts");
+---
+
+<BaseLayout title="Inicio">
+  <SideMenu slot="side-menu" />
+  <section class="nes-container is-dark with-title">
+    <p class="title">Bienvenido a Codex Barbas</p>
+    <div class="nes-balloon from-left is-dark">
+      <p>
+        Una wiki retro hecha con café, Astro y NES.css por <a
+          href="https://programacion-es.dev"
+          target="_blank"
+          >Programación en español <img
+            src="logo 8bit.webp"
+            alt="logo programación en español"
+            class="pee-logo"
+          /></a
+        >
+      </p>
+    </div>
+  </section>
+
+  <section class="nes-container is-dark with-title" style="margin-top: 2rem;">
+    <p class="title">Contenido reciente</p>
+
+    {
+      posts.length > 0 ? (
+        <ul class="nes-list is-disc">
+          {posts.map((post) => (
+            <li>
+              <a href={`/${post.slug}`} class="nes-text is-primary">
+                {post.data.title}
+              </a>
+              <p>{post.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No hay entradas recientes, vuelve más tarde =)</p>
+      )
+    }
+
+    <a href="/blog" class="nes-btn is-primary" style="margin-top: 1rem;"
+      >Ver todas las entradas</a
+    >
+  </section>
+</BaseLayout>
+
+<style>
+  .pee-logo {
+    width: 30px;
+    height: auto;
+    vertical-align: baseline;
+  }
+</style>

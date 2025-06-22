@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SideMenu from "../components/SideMenu.astro";
+---
+
+<BaseLayout title="Acerca de">
+  <SideMenu slot="side-menu" />
+  <section class="nes-container is-dark with-title">
+    <h1 class="title">Acerca de Codex Barba</h1>
+
+    <div class="character-section">
+      <div>
+        <i class="nes-octocat animate"></i>
+      </div>
+      <div class="nes-balloon from-left is-dark">
+        <p>
+          Codex Barba es una wiki retro creada con amor por <a
+            href="https://programacion-es.dev"
+            target="_blank">Programación en español</a
+          >. Utiliza Astro y NES.css para ofrecer una experiencia nostálgica y
+          acceso rápido al contenido de la comunidad y a los diagramas y
+          archivos teóricos complementarios creados para los vídeo tutoriales.
+        </p>
+      </div>
+    </div>
+
+    <div class="features" style="margin-top: 2rem;">
+      <h2>Características:</h2>
+      <ul class="nes-list is-disc">
+        <li>Construido con Astro v4+</li>
+        <li>Estilizado con NES.css</li>
+        <li>Contenido escrito en Markdown (mdx)</li>
+      </ul>
+    </div>
+
+    <a href="/" class="nes-btn" style="margin-top: 2rem;">← Ir al inicio</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .character-section {
+    margin-top: 2rem;
+    display: flex;
+    align-items: flex-end;
+  }
+  .skill p {
+    margin-bottom: 0.5rem;
+  }
+</style>
