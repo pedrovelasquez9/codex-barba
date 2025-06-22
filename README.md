@@ -1,4 +1,4 @@
-# My Static Astro Site
+# Codex Barba
 
 This is a static website project built with the **Astro** framework. The site content is managed through **Markdown** files and is designed to have a retro look inspired by 8-bit video games using **NES.css**.
 
@@ -7,7 +7,7 @@ This is a static website project built with the **Astro** framework. The site co
 The project has the following folder structure:
 
 ```
-my-static-astro-site
+codex-barba
 ├── src
 │   ├── components
 │   │   └── PostCard.astro
