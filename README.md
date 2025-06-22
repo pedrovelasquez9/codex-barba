@@ -1,10 +1,10 @@
 # My Static Astro Site
 
-Este es un proyecto de sitio web estático construido con el framework **Astro**. El contenido del sitio se gestiona a través de archivos **Markdown** y está diseñado para tener una apariencia retro inspirada en videojuegos de 8 bits utilizando **NES.css**.
+This is a static website project built with the **Astro** framework. The site content is managed through **Markdown** files and is designed to have a retro look inspired by 8-bit video games using **NES.css**.
 
-## Estructura del Proyecto
+## Project Structure
 
-El proyecto tiene la siguiente estructura de carpetas:
+The project has the following folder structure:
 
 ```
 my-static-astro-site
@@ -24,28 +24,28 @@ my-static-astro-site
 └── README.md
 ```
 
-## Instalación
+## Installation
 
-Para instalar las dependencias del proyecto, ejecuta el siguiente comando en la raíz del proyecto:
+To install the project dependencies, run the following command at the root of the project:
 
 ```
 npm install
 ```
 
-## Ejecución
+## Running the Project
 
-Para iniciar el servidor de desarrollo y ver el sitio en acción, utiliza el siguiente comando:
+To start the development server and see the site in action, use the following command:
 
 ```
 npm run dev
 ```
 
-Esto abrirá el sitio en tu navegador en `http://localhost:3000`.
+This will open the site in your browser at `http://localhost:4321`.
 
-## Contribuciones
+## Contributions
 
-Si deseas contribuir a este proyecto, siéntete libre de hacer un fork y enviar un pull request. Asegúrate de seguir las buenas prácticas de codificación y mantener el estilo retro de NES.css en toda la interfaz.
+If you want to contribute to this project, feel free to fork it and submit a pull request. Make sure to follow best coding practices and maintain the retro style of NES.css throughout the interface.
 
-## Licencia
+## License
 
-Este proyecto está bajo la licencia MIT.
+This project is licensed under the MIT License.
