@@ -18,7 +18,8 @@ type ProgrammingCategory =
   | "Soft skills"
   | "Documentación de Software"
   | "Algoritmos y Estructuras de Datos"
-  | "Arquitectura de Software";
+  | "Arquitectura de Software"
+  | "Fundamentos de programación";
 
 // Get all published posts
 const allPosts = await getCollection("posts", ({ data }) => {
@@ -48,6 +49,7 @@ function getCategoryFromTags(
     "documentación de software": "Documentación de Software",
     "algoritmos y estructuras de datos": "Algoritmos y Estructuras de Datos",
     arquitectura: "Arquitectura de Software",
+    fundamentos: "Fundamentos de programación",
   };
 
   return tags
@@ -76,6 +78,7 @@ const allCategories: ProgrammingCategory[] = [
   "Documentación de Software",
   "Algoritmos y Estructuras de Datos",
   "Arquitectura de Software",
+  "Fundamentos de programación",
 ];
 
 // Initialize empty arrays for each category
@@ -123,6 +126,7 @@ const categoryColors: Record<
   "Documentación de Software": { bg: "#f94144", text: "#ffffff" },
   "Algoritmos y Estructuras de Datos": { bg: "#577590", text: "#ffffff" },
   "Arquitectura de Software": { bg: "#43aa8b", text: "#ffffff" },
+  "Fundamentos de programación": { bg: "#f3722c", text: "#ffffff" },
 };
 ---
 
