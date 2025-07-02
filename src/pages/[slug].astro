@@ -21,7 +21,7 @@ const { Content }: any = await post.render();
 
 <BaseLayout title={post?.data?.title} description={post?.data?.description}>
   <SideMenu slot="side-menu" />
-  <article class="nes-container is-dark with-title">
+  <article class="nes-container is-dark with-title article-container">
     <p class="title">{post?.data?.title}</p>
 
     <div class="post-meta">
@@ -92,5 +92,27 @@ const { Content }: any = await post.render();
     padding: 1rem;
     border-radius: 4px;
     overflow-x: auto;
+  }
+
+  @media (max-width: 676px) {
+    .article-container {
+      padding: 1rem;
+      border-color: transparent;
+    }
+
+    .tags {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .nes-badge {
+    }
+
+    .nes-badge span {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 </style>
