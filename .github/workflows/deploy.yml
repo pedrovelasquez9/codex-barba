@@ -1,3 +1,5 @@
+name: Build and Deploy Astro SSG
+
 on:
   push:
     branches:
@@ -5,19 +7,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  run_pull:
-    name: run pull
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: install ssh keys
-        # check this thread to understand why its needed:
-        # https://stackoverflow.com/a/70447517
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Astro project
+        run: npm run build
+
+      - name: Setup SSH
         run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-      - name: connect and pull
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && npm i && npm run build && exit"
-      - name: cleanup
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Clean remote directory before deploy
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf ${{ secrets.WORK_DIR }}/dir/*"
+
+      - name: Upload built site to server
+        run: |
+          scp -r dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}/dir
+
+      - name: Cleanup
         run: rm -rf ~/.ssh
