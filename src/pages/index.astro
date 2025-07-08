@@ -10,7 +10,7 @@ const posts = await getCollection("posts");
 <BaseLayout title="Inicio">
   <SideMenu slot="side-menu" />
   <section class="nes-container is-dark with-title">
-    <p class="title">Bienvenido a Codex Barbas</p>
+    <h1 class="title">Bienvenido a Codex Barba</h1>
     <div class="nes-balloon from-left is-dark">
       <p>
         Una wiki retro hecha con café, Astro y NES.css por <a
@@ -57,6 +57,26 @@ const posts = await getCollection("posts");
     width: 30px;
     height: auto;
     vertical-align: baseline;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Press Start 2P";
+    line-height: 1.4;
+    font-size: clamp(14px, 1.8rem, 20px) !important;
+  }
+
+  p,
+  li,
+  a {
+    font-family: "Press Start 2P";
+    font-size: clamp(14px, 1.4rem, 1rem) !important;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
   }
 
   @media (max-width: 676px) {
