@@ -79,38 +79,18 @@ const {
       h6 {
         font-family: "Press Start 2P";
         line-height: 1.4;
-        font-size: clamp(14px, 1.8vw, 20px) !important;
+        font-size: clamp(14px, 1.8rem, 20px) !important;
       }
 
       p,
       li,
       a {
-        font-family: "VT323", monospace;
-        font-size: clamp(12px, 1.4vw, 18px) !important;
-        line-height: 1.4;
-        letter-spacing: 0.5px;
-      }
-
-      /* Add readable text for all heading tags inside main-content */
-      .main-content h1,
-      .main-content h2,
-      .main-content h3,
-      .main-content h4,
-      .main-content h5,
-      .main-content h6 {
         font-family: "Press Start 2P";
-        line-height: 1.4;
-        font-size: clamp(14px, 1.8vw, 20px) !important;
-      }
-
-      .main-content p,
-      .main-content li,
-      .main-content a {
-        font-family: "VT323", monospace;
-        font-size: clamp(12px, 1.4vw, 18px) !important;
+        font-size: clamp(14px, 1.4rem, 1rem) !important;
         line-height: 1.4;
         letter-spacing: 0.5px;
       }
+
       .container {
         max-width: 1400px;
         margin: 0 auto;
@@ -267,6 +247,17 @@ const {
           border-color: transparent;
         }
       }
+
+      @media (max-width: 514px) {
+        .nav-links {
+          display: flex;
+          gap: 1rem;
+          flex-wrap: wrap;
+          margin-top: 1rem;
+          align-items: center;
+          flex-direction: column;
+        }
+      }
     </style>
   </head>
   <body>
@@ -278,7 +269,7 @@ const {
 
         <div class="main-column">
           <header class="nes-container is-dark with-title">
-            <p class="title">Codex Barba</p>
+            <h1 class="title">Codex Barba</h1>
             <nav class="nav-links">
               <a href="/"
                 ><img
