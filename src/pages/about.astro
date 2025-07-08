@@ -24,7 +24,7 @@ import SideMenu from "../components/SideMenu.astro";
       </div>
     </div>
 
-    <div class="features" style="margin-top: 2rem;">
+    <div class="features">
       <h2>Características:</h2>
       <ul class="nes-list is-disc">
         <li>Construido con Astro v4+</li>
@@ -33,7 +33,7 @@ import SideMenu from "../components/SideMenu.astro";
       </ul>
     </div>
 
-    <a href="/" class="nes-btn" style="margin-top: 2rem;">← Ir al inicio</a>
+    <a href="/" class="nes-btn back-btn">← Ir al inicio</a>
   </section>
 </BaseLayout>
 
@@ -43,7 +43,34 @@ import SideMenu from "../components/SideMenu.astro";
     display: flex;
     align-items: flex-end;
   }
+
   .skill p {
     margin-bottom: 0.5rem;
+  }
+
+  .features {
+    margin-top: 2rem;
+  }
+
+  .back-btn {
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 676px) {
+    .nes-container {
+      padding: 1.5rem 0;
+      border-color: transparent;
+    }
+
+    .character-section {
+      margin-top: 2rem;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column-reverse;
+    }
+
+    .back-btn {
+      width: 100%;
+    }
   }
 </style>

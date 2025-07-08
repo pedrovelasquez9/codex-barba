@@ -30,7 +30,7 @@ const { Content }: any = await post.render();
       </span>
       {
         post?.data?.tags && (
-          <div class="tags" style="margin-top: 1rem;">
+          <div class="tags">
             {post?.data?.tags.map((tag: string) => (
               <span class="nes-badge">
                 <span class="is-primary">{tag}</span>
@@ -41,17 +41,21 @@ const { Content }: any = await post.render();
       }
     </div>
 
-    <div class="post-content" style="margin-top: 2rem;">
+    <div class="post-content">
       <Content />
     </div>
 
-    <a href="/" class="nes-btn" style="margin-top: 2rem;">← Ir al inicio</a>
+    <a href="/" class="nes-btn back-btn">← Ir al inicio</a>
   </article>
 </BaseLayout>
 
 <style>
   .nes-badge span {
     width: auto;
+  }
+
+  .back-btn {
+    margin-top: 2rem;
   }
 
   .post-meta {
@@ -65,10 +69,12 @@ const { Content }: any = await post.render();
     gap: 0.5rem;
     flex-wrap: wrap;
     width: min-content;
+    margin-top: 1rem;
   }
 
   .post-content {
     line-height: 1.6;
+    margin-top: 2rem;
   }
 
   .post-content :global(h1),
@@ -113,6 +119,10 @@ const { Content }: any = await post.render();
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .back-btn {
+      width: 100%;
     }
   }
 </style>

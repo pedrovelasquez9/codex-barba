@@ -55,17 +55,39 @@ const {
         margin: 0;
         padding: 0;
       }
+
       body {
         font-family: "Press Start 2P";
         padding: 0.5rem;
         background-color: #212529;
         color: #fff;
+        font-size: clamp(12px, 1.4vw, 18px) !important;
       }
 
       /* Secondary font for better readability */
       .readable-text {
         font-family: "VT323", monospace;
         font-size: 1.2rem;
+        letter-spacing: 0.5px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Press Start 2P";
+        line-height: 1.4;
+        font-size: clamp(14px, 1.8vw, 20px) !important;
+      }
+
+      p,
+      li,
+      a {
+        font-family: "VT323", monospace;
+        font-size: clamp(12px, 1.4vw, 18px) !important;
+        line-height: 1.4;
         letter-spacing: 0.5px;
       }
 
@@ -78,13 +100,14 @@ const {
       .main-content h6 {
         font-family: "Press Start 2P";
         line-height: 1.4;
+        font-size: clamp(14px, 1.8vw, 20px) !important;
       }
 
       .main-content p,
       .main-content li,
       .main-content a {
         font-family: "VT323", monospace;
-        font-size: 1.4rem;
+        font-size: clamp(12px, 1.4vw, 18px) !important;
         line-height: 1.4;
         letter-spacing: 0.5px;
       }
@@ -236,6 +259,13 @@ const {
         height: auto;
         vertical-align: middle;
         margin-left: 10px;
+      }
+
+      @media (max-width: 676px) {
+        .nes-container {
+          padding: 1.5rem 0;
+          border-color: transparent;
+        }
       }
     </style>
   </head>
