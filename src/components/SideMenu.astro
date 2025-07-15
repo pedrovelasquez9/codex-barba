@@ -19,7 +19,8 @@ type ProgrammingCategory =
   | "Documentación de Software"
   | "Algoritmos y Estructuras de Datos"
   | "Arquitectura de Software"
-  | "Fundamentos de programación";
+  | "Fundamentos de programación"
+  | "Patrones de diseño";
 
 // Get all published posts
 const allPosts = await getCollection("posts", ({ data }) => {
@@ -50,6 +51,7 @@ function getCategoryFromTags(
     "algoritmos y estructuras de datos": "Algoritmos y Estructuras de Datos",
     arquitectura: "Arquitectura de Software",
     fundamentos: "Fundamentos de programación",
+    "patrones de diseño": "Patrones de diseño",
   };
 
   return tags
@@ -79,6 +81,7 @@ const allCategories: ProgrammingCategory[] = [
   "Algoritmos y Estructuras de Datos",
   "Arquitectura de Software",
   "Fundamentos de programación",
+  "Patrones de diseño",
 ];
 
 // Initialize empty arrays for each category
@@ -127,6 +130,7 @@ const categoryColors: Record<
   "Algoritmos y Estructuras de Datos": { bg: "#577590", text: "#ffffff" },
   "Arquitectura de Software": { bg: "#43aa8b", text: "#ffffff" },
   "Fundamentos de programación": { bg: "#f3722c", text: "#ffffff" },
+  "Patrones de diseño": { bg: "#f9c74f", text: "#000000" },
 };
 ---
 
