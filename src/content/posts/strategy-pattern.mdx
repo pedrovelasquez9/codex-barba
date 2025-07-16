@@ -1,0 +1,49 @@
+---
+title: Patrón strategy
+description: Aprende qué es el patrón strategy y cómo puede mejorar tu código
+publishDate: 2025-07-15
+tags: ["patrones de diseño"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../components/YoutubeEmbed.astro";
+
+# Patrón Strategy
+
+El patrón Strategy es un patrón de diseño de comportamiento que permite definir una familia de algoritmos, encapsular cada uno de ellos y hacerlos intercambiables. Este patrón permite que el algoritmo varíe independientemente de los clientes que lo utilizan.
+
+## ¿Cómo funciona?
+
+El patrón Strategy define una interfaz común para todos los algoritmos, y luego implementa diferentes estrategias que cumplen con esta interfaz. El cliente puede elegir qué estrategia utilizar en tiempo de ejecución.
+
+## ¿Cuándo usarlo?
+
+Utiliza el patrón Strategy cuando:
+
+- Tienes múltiples algoritmos que pueden ser utilizados de manera intercambiable.
+- Quieres evitar el uso de condicionales complejos para seleccionar un algoritmo.
+- Necesitas cambiar el comportamiento de un objeto en tiempo de ejecución sin modificar su código.
+
+## Vídeo completo con ejemplos prácticos
+
+<YouTubeEmbed
+  id="j0I_hzEhfTE"
+  title="Qué son los patrones de diseño - Programación en español"
+/>
+
+## Diagrama teórico
+
+<a href="/diagrams/Strategy.png" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/diagrams/Strategy.png"
+    alt="Diagrama de patrón Strategy"
+    width={800}
+    height={600}
+  />
+</a>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
