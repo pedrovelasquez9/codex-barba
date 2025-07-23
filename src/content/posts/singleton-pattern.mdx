@@ -1,0 +1,58 @@
+---
+title: Patrón singleton
+description: Aprende qué es el patrón singleton y cuándo suele usarse
+publishDate: 2025-07-23
+tags: ["patrones de diseño"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../components/YoutubeEmbed.astro";
+
+# Patrón Singleton
+
+El patrón Singleton es un patrón de diseño que restringe la instanciación de una clase a un solo objeto. Este patrón es útil cuando exactamente un objeto es necesario para coordinar acciones en todo el sistema.
+
+## ¿Cómo funciona?
+
+El patrón Singleton asegura que una clase tenga una única instancia y proporciona un punto de acceso global a ella. Esto se logra mediante la creación de una clase con un constructor privado y un método estático que devuelve la instancia única.
+
+## ¿Cuándo usarlo?
+
+Utiliza el patrón Singleton cuando:
+
+- Necesitas asegurarte de que una clase tenga una única instancia.
+- Quieres proporcionar un punto de acceso global a esa instancia.
+- Necesitas controlar el acceso a recursos compartidos, como conexiones a bases de datos.
+
+## ¿Por qué se considera un antipatrón?
+
+Aunque el patrón Singleton puede ser útil, también se considera un antipatrón en algunos casos porque:
+
+- Puede dificultar las pruebas unitarias, ya que introduce un estado global.
+- Puede llevar a un acoplamiento fuerte entre clases, lo que dificulta la reutilización de código y la mantenibilidad.
+- Puede ocultar dependencias, haciendo que el código sea menos claro y más difícil de entender.
+- Puede ser difícil de extender o modificar sin afectar a otras partes del sistema.
+
+## Vídeo completo con ejemplos prácticos
+
+<YouTubeEmbed
+  id="YRLvJfItAT4"
+  title="Patrón Singleton - Programación en español"
+/>
+
+## Diagrama teórico
+
+<a href="/diagrams/Singleton.png" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/diagrams/Singleton.png"
+    alt="Diagrama de patrón Singleton"
+    width={800}
+    height={600}
+  />
+</a>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
