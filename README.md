@@ -44,7 +44,7 @@ This will open the site in your browser at `http://localhost:4321`.
 
 ## Contributions
 
-If you want to contribute to this project, feel free to fork it and submit a pull request. Make sure to follow best coding practices and maintain the retro style of NES.css throughout the interface.
+If you want to contribute to this project, feel free to fork it and submit a pull request. Make sure to follow best coding practices and maintain the retro style of NES.css throughout the interface. Please ensure that your pull requests are made pointing to `develop` branch.
 
 ## License
 
