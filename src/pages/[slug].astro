@@ -3,19 +3,27 @@ import { getCollection, getEntryBySlug } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SideMenu from "../components/SideMenu.astro";
 
-// Define the static paths for all blog posts
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+
+  return posts.map((post) => {
+    const slugName = post.slug.split("/").pop();
+    return {
+      params: { slug: slugName },
+      props: { slugName },
+    };
+  });
 }
 
-// Get the post from the props
-const { post }: any = Astro.props;
+const { slugName }: any = Astro.props;
 
-// Get the rendered content
+const allPosts = await getCollection("posts");
+const post = allPosts.find((p) => p.slug.split("/").pop() === slugName);
+
+if (!post) {
+  throw new Error(`No se encontró el post para el slug: ${slugName}`);
+}
+
 const { Content }: any = await post.render();
 ---
 

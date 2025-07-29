@@ -1,0 +1,99 @@
+---
+title: Variables en JavaScript
+description: Aprende a declarar variables en JavaScript
+publishDate: 2025-07-28
+tags: ["JavaScript"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Variables en JavaScript
+
+En JavaScript se pueden declarar variables de 4 maneras diferentes:
+
+* var (en desuso desde el 2015)
+* let
+* const
+* Automáticamente (no recomendado)
+
+## Ejemplo de Var 
+
+### var está en desuso desde el 2015, pero aún se puede usar. No es una buena práctica usarlo porque puede causar problemas de alcance (scope) y redeclaración.
+
+```javascript
+<script>
+  var x = 5;
+  var y = 6;
+  var z = x + y;
+</script>
+```
+En este caso la variable `x` se declara con el valor 5, la variable `y` con el valor 6 y la variable `z` es la suma de `x` y `y`, por lo que su valor será 11.
+
+## Ejemplo de Let
+
+```javascript
+<script>
+  let x = 5;
+  let y = 6;
+  let z = x + y;
+</script>
+```
+
+En este caso la variable `x` se declara con el valor 5, la variable `y` con el valor 6 y la variable `z` es la suma de `x` y `y`, por lo que su valor será 11.  
+La diferencia con `var` es que `let` tiene un alcance de bloque, lo que significa que solo está disponible dentro del bloque donde se declara.
+## Ejemplo de Const
+
+```javascript
+<script>
+  const x = 5;
+  const y = 6;
+  const z = x + y;
+</script>
+```
+
+En este caso la variable `x` se declara con el valor 5, la variable `y` con el valor 6 y la variable `z` es la suma de `x` y `y`, por lo que su valor será 11.  
+La diferencia con `let` es que `const` no se puede reasignar, es decir, una vez que se declara una variable con `const`, no se puede cambiar su valor. Esto es útil para declarar constantes que no deben cambiar durante la ejecución del programa.
+
+## Ejemplo mixto
+
+```javascript
+<script>
+  const price1 = 5;
+  const price2 = 6;
+  let total = price1 + price2;
+```
+En este caso, `price1` y `price2` son constantes que no cambiarán, mientras que `total` es una variable que puede cambiar si se recalcula. Esto es útil para mantener la integridad de los valores que no deben cambiar.
+
+## ¿Cuando usar let o const?
+
+1. Úselo siempre const si no se debe cambiar el valor.
+
+2. Úselo siempre const si no se debe cambiar el tipo (matrices y objetos)
+
+3. Úselo solo let si no lo puede manejar const
+
+4. Úselo solo var si DEBE admitir navegadores antiguos.  
+    Tenga en cuenta que las variables declaradas con `var` tienen alcance de función (function scope), lo que puede causar problemas de redeclaración y acceso inesperado fuera de bloques.  
+    La introducción de `let` y `const` en JavaScript (ES6) permitió un mejor control del alcance (block scope) y la mutabilidad de las variables, haciendo el código más seguro y predecible.
+
+### Notas
+
+Cualquiera de las variables (var, let o const) se pueden usar para almacenar cualquier tipo de dato, como números, cadenas de texto, booleanos, objetos, arreglos, etc. 
+
+
+Las variables let y const son las más recomendadas para usar en JavaScript moderno, ya que ofrecen un mejor control sobre el alcance y la mutabilidad de las variables. `var` es una forma más antigua de declarar variables y se desaconseja su uso en código nuevo.
+
+Las variables automáticas no se mencionan porque no son una buena práctica y pueden causar problemas en el código. Se recomienda siempre declarar las variables con `let` o `const` para evitar confusiones y errores.
+Las variables automáticas son aquellas que se declaran sin usar ninguna palabra clave, lo cual no es recomendado.
+
+<br />
+
+##### Post redactado por DaviDevLeon (David de Leon) <a href="https://github.com/DaviDevLeon" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg></a> <a href="https://x.com/DaviDevLeon" target="_blank" rel="noopener noreferrer" style="margin-left: 8px;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/></svg></a>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
+

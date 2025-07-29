@@ -84,31 +84,25 @@ const allCategories: ProgrammingCategory[] = [
   "Patrones de diseño",
 ];
 
-// Initialize empty arrays for each category
 allCategories.forEach((category) => {
   postsByCategory.set(category, []);
 });
 
-// Populate categories
 allPosts.forEach((post) => {
   const categories = getCategoryFromTags(post.data.tags);
 
-  // If no categories found, skip
   if (categories.length === 0) return;
 
-  // Add post to each category it belongs to
   categories.forEach((category) => {
     const postsInCategory = postsByCategory.get(category) || [];
     postsByCategory.set(category, [...postsInCategory, post]);
   });
 });
 
-// Sort categories by post count (most posts first)
 const sortedCategories = [...postsByCategory.entries()]
   .sort((a, b) => b[1].length - a[1].length)
   .map(([category]) => category);
 
-// Category colors map
 const categoryColors: Record<
   ProgrammingCategory,
   { bg: string; text: string }
@@ -146,7 +140,12 @@ const categoryColors: Record<
   <div class="categories-list">
     {
       sortedCategories.map((category) => {
-        const posts = postsByCategory.get(category) || [];
+        let posts = postsByCategory.get(category) || [];
+        posts = posts.sort((a, b) => {
+          const dateA = a.data.publishDate || new Date(0);
+          const dateB = b.data.publishDate || new Date(0);
+          return dateA.getTime() - dateB.getTime();
+        });
         if (posts.length === 0) return null;
         const color = categoryColors[category];
 
@@ -167,15 +166,18 @@ const categoryColors: Record<
             <div class="category-posts">
               <div class="category-posts-inner">
                 <ul class="post-list">
-                  {posts.map((post) => (
-                    <li class="post-item">
-                      <a href={`/${post.slug}`} class="post-link">
-                        <span class="post-title readable-text">
-                          {post.data.title}
-                        </span>
-                      </a>
-                    </li>
-                  ))}
+                  {posts.map((post) => {
+                    const slugName = post.slug.split("/").pop();
+                    return (
+                      <li class="post-item">
+                        <a href={`/${slugName}`} class="post-link">
+                          <span class="post-title readable-text">
+                            {post.data.title}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
@@ -193,9 +195,7 @@ const categoryColors: Record<
 </aside>
 
 <script>
-  // Add toggle functionality
   document.addEventListener("DOMContentLoaded", () => {
-    // Menu toggle functionality for mobile/tablet
     const menuToggleBtn = document.getElementById("sideMenuToggle");
     const sideMenu = document.getElementById("sideMenu");
     const sideMenuIcon = document.getElementById("sideMenuIcon");
@@ -208,7 +208,6 @@ const categoryColors: Record<
       });
     }
 
-    // Handle closing menu when clicking outside on mobile/tablet
     document.addEventListener("click", (event) => {
       const target = event.target as Node;
       const isSmallScreen = window.innerWidth <= 768;
@@ -221,7 +220,6 @@ const categoryColors: Record<
       }
     });
 
-    // Toggle functionality for categories
     const toggles = document.querySelectorAll(".category-toggle");
 
     toggles.forEach((toggle) => {
@@ -234,7 +232,6 @@ const categoryColors: Record<
       toggle.addEventListener("click", () => {
         const isChecked = indicator?.getAttribute("data-checked") === "true";
 
-        // Update indicator state
         if (indicator) {
           if (isChecked) {
             indicator.setAttribute("data-checked", "false");
@@ -245,7 +242,6 @@ const categoryColors: Record<
           }
         }
 
-        // Toggle category posts visibility
         if (categoryPosts) {
           if (isChecked) {
             categoryPosts.classList.add("hidden");
@@ -259,12 +255,11 @@ const categoryColors: Record<
 </script>
 
 <style>
-  /* Menu toggle button styles */
   .nes-icon.close::before {
     color: #fff !important;
   }
   .menu-toggle-wrapper {
-    display: none; /* Hidden by default on desktop */
+    display: none;
     position: fixed;
     top: 15px;
     left: 15px;
@@ -318,7 +313,6 @@ const categoryColors: Record<
     transform: scale(1.2);
   }
 
-  /* Side menu styles */
   .side-menu {
     margin-bottom: 1.5rem;
     font-size: 0.8rem;
@@ -332,7 +326,6 @@ const categoryColors: Record<
       max-height 0.3s ease;
   }
 
-  /* Title styles for desktop only */
   .side-menu .categories-title {
     margin-bottom: 0.75rem;
     padding: 0.25rem 0.5rem;
@@ -340,7 +333,6 @@ const categoryColors: Record<
     display: block;
   }
 
-  /* Ensure proper margin/padding for categories list */
   .side-menu.is-dark:not(.with-title) .categories-list {
     margin-top: 0;
     padding-top: 0.25rem;
@@ -353,7 +345,6 @@ const categoryColors: Record<
     width: 100%;
   }
 
-  /* Category section */
   .category-section {
     margin-bottom: 1.5rem;
   }
@@ -396,7 +387,6 @@ const categoryColors: Record<
     box-shadow: 0 0 5px rgba(173, 175, 188, 0.5);
   }
 
-  /* Instead of checkmark, use a brightness change to indicate open/closed */
   .category-color-indicator[data-checked="true"] {
     filter: brightness(1.2);
   }
@@ -423,12 +413,11 @@ const categoryColors: Record<
     font-size: 0.5rem;
   }
 
-  /* Post lists */
   .category-posts {
     margin-left: 0.75rem;
     transition: all 0.3s ease-out;
     overflow: hidden;
-    max-height: 2000px; /* Very large value to accommodate any content */
+    max-height: 2000px;
   }
 
   .category-posts.hidden {
@@ -508,12 +497,10 @@ const categoryColors: Record<
     padding: 1rem;
   }
 
-  /* Custom checkbox styling */
   .nes-checkbox + span {
     color: #fff;
   }
 
-  /* Retro scrollbars */
   .categories-list::-webkit-scrollbar {
     width: 8px;
   }
@@ -529,9 +516,7 @@ const categoryColors: Record<
     image-rendering: pixelated;
   }
 
-  /* Media queries for responsive behavior */
   @media (max-width: 1024px) {
-    /* Tablet and below */
     .menu-toggle-wrapper {
       display: flex;
     }
@@ -554,12 +539,10 @@ const categoryColors: Record<
         opacity 0.3s ease;
     }
 
-    /* Remove the title completely in mobile/tablet view */
     .side-menu .categories-title {
       display: none;
     }
 
-    /* Adjust spacing since title is hidden */
     .side-menu .categories-list {
       margin-top: 45px !important;
       padding-top: 0.5rem !important;
@@ -570,7 +553,6 @@ const categoryColors: Record<
       opacity: 1;
     }
 
-    /* Add a backdrop when menu is active */
     .side-menu.active::after {
       content: "";
       position: fixed;
@@ -582,14 +564,12 @@ const categoryColors: Record<
       z-index: -1;
     }
 
-    /* Adjust scrollbar in mobile view */
     .categories-list {
       max-height: calc(100vh - 3rem);
     }
   }
 
   @media (max-width: 576px) {
-    /* Mobile */
     .side-menu {
       width: 85%;
     }
@@ -612,7 +592,6 @@ const categoryColors: Record<
       transform: scale(1) rotate(45deg);
     }
 
-    /* Fine-tune the positioning and spacing for mobile */
     .side-menu {
       padding-top: 0.75rem;
     }
