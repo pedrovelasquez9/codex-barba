@@ -3,8 +3,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import SideMenu from "../components/SideMenu.astro";
 
-// Get all blog posts from the content collection
-const posts = await getCollection("posts");
+
+const allPosts = await getCollection("posts");
+const posts = allPosts.sort((a, b) => {
+  const dateA = a.data.publishDate || new Date(0);
+  const dateB = b.data.publishDate || new Date(0);
+  return dateB.getTime() - dateA.getTime();
+});
 ---
 
 <BaseLayout title="Inicio">
