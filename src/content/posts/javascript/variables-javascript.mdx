@@ -73,7 +73,9 @@ En este caso, `price1` y `price2` son constantes que no cambiarán, mientras que
 
 3. Úselo solo let si no lo puede manejar const
 
-4. Úselo solo var si DEBE admitir navegadores antiguos.
+4. Úselo solo var si DEBE admitir navegadores antiguos.  
+    Tenga en cuenta que las variables declaradas con `var` tienen alcance de función (function scope), lo que puede causar problemas de redeclaración y acceso inesperado fuera de bloques.  
+    La introducción de `let` y `const` en JavaScript (ES6) permitió un mejor control del alcance (block scope) y la mutabilidad de las variables, haciendo el código más seguro y predecible.
 
 ### Notas
 
