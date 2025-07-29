@@ -46,7 +46,7 @@ const posts = allPosts.sort((a, b) => {
               )}
 
               <a
-                href={`/${post.slug}`}
+                href={`/${post.slug.split("/").pop()}`}
                 class="nes-btn is-primary"
                 style="margin-top: 1rem;"
               >

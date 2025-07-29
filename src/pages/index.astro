@@ -32,14 +32,17 @@ const posts = await getCollection("posts");
     {
       posts.length > 0 ? (
         <ul class="nes-list is-disc">
-          {posts.map((post) => (
-            <li>
-              <a href={`/${post.slug}`} class="nes-text is-primary">
-                {post.data.title}
-              </a>
-              <p>{post.data.description}</p>
-            </li>
-          ))}
+          {posts.map((post) => {
+            const slugName = post.slug.split("/").pop();
+            return (
+              <li>
+                <a href={`/${slugName}`} class="nes-text is-primary">
+                  {post.data.title}
+                </a>
+                <p>{post.data.description}</p>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p>No hay entradas recientes, vuelve más tarde =)</p>
