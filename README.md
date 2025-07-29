@@ -13,7 +13,8 @@ codex-barba
 │   │   └── PostCard.astro
 │   ├── content
 │   │   └── posts
-│   │       └── primer-post.md
+│           └── categoría
+│   │           └── primer-post.mdx
 │   ├── layouts
 │   │   └── BaseLayout.astro
 │   └── pages

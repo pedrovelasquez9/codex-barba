@@ -3,8 +3,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import SideMenu from "../components/SideMenu.astro";
 
-// Get all blog posts from the content collection
-const posts = await getCollection("posts");
+
+const allPosts = await getCollection("posts");
+const posts = allPosts.sort((a, b) => {
+  const dateA = a.data.publishDate || new Date(0);
+  const dateB = b.data.publishDate || new Date(0);
+  return dateB.getTime() - dateA.getTime();
+});
 ---
 
 <BaseLayout title="Inicio">
@@ -32,14 +37,17 @@ const posts = await getCollection("posts");
     {
       posts.length > 0 ? (
         <ul class="nes-list is-disc">
-          {posts.map((post) => (
-            <li>
-              <a href={`/${post.slug}`} class="nes-text is-primary">
-                {post.data.title}
-              </a>
-              <p>{post.data.description}</p>
-            </li>
-          ))}
+          {posts.map((post) => {
+            const slugName = post.slug.split("/").pop();
+            return (
+              <li>
+                <a href={`/${slugName}`} class="nes-text is-primary">
+                  {post.data.title}
+                </a>
+                <p>{post.data.description}</p>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p>No hay entradas recientes, vuelve más tarde =)</p>
