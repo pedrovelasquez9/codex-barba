@@ -1,0 +1,49 @@
+---
+title: Patrón Factory Method
+description: Aprende qué es el patrón Factory Method y cuándo suele usarse
+publishDate: 2025-07-30
+tags: ["patrones de diseño"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Patrón Factory Method
+
+El patrón Factory Method es un patrón de diseño creacional que proporciona una interfaz para crear objetos en una clase base, pero permite que las subclases alteren el tipo de objetos que se crearán. Este patrón es útil cuando no se sabe de antemano qué clase se necesita instanciar.
+
+## ¿Cómo funciona?
+
+El patrón Factory Method define un método en la clase base que debe ser implementado por las subclases para crear objetos. Esto permite que las subclases decidan qué clase instanciar, delegando la responsabilidad de la creación de objetos a las subclases.
+
+## ¿Cuándo usarlo?
+
+Utiliza el patrón Factory Method cuando:
+
+- Necesitas crear objetos de diferentes clases que comparten una interfaz común.
+- Quieres delegar la responsabilidad de la creación de objetos a las subclases.
+- Necesitas encapsular la lógica de creación de objetos y hacerla más flexible.
+
+## Vídeo completo con ejemplos prácticos
+
+<YouTubeEmbed
+  id="Lm05_ANvxaI"
+  title="Patrón Factory Method - Programación en español"
+/>
+
+## Diagrama teórico
+
+<a href="/diagrams/FactoryMethod.png" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/diagrams/FactoryMethod.png"
+    alt="Diagrama de patrón Factory Method"
+    width={800}
+    height={600}
+  />
+</a>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
