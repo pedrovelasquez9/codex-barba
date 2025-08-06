@@ -1,0 +1,49 @@
+---
+title: Patrón Observer
+description: Aprende qué es el patrón Observer y cuándo suele usarse
+publishDate: 2025-08-06
+tags: ["patrones de diseño"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Patrón Observer
+
+El patrón Observer es un patrón de diseño de comportamiento que permite a un objeto (el sujeto) notificar a otros objetos (los observadores) sobre cambios en su estado. Este patrón es útil cuando se necesita mantener la coherencia entre diferentes partes de un sistema sin acoplarlas fuertemente.
+
+## ¿Cómo funciona?
+
+El patrón Observer se basa en la relación de uno a muchos entre el sujeto y los observadores. Cuando el estado del sujeto cambia, notifica a todos sus observadores registrados para que puedan reaccionar a los cambios. Esto se logra mediante la implementación de métodos para agregar, eliminar y notificar observadores.
+
+## ¿Cuándo usarlo?
+
+Utiliza el patrón Observer cuando:
+
+- Necesitas notificar a múltiples objetos sobre cambios en el estado de otro objeto.
+- Quieres reducir el acoplamiento entre componentes de tu sistema.
+- Necesitas implementar una funcionalidad de suscripción y publicación.
+
+## Vídeo completo con ejemplos prácticos
+
+<YouTubeEmbed
+  id="QknIpSHnIhc"
+  title="Patrón Observer - Programación en español"
+/>
+
+## Diagrama teórico
+
+<a href="/diagrams/Observer.png" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/diagrams/Observer.png"
+    alt="Diagrama de patrón Observer"
+    width={800}
+    height={600}
+  />
+</a>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
