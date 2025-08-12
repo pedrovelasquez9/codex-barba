@@ -1,0 +1,43 @@
+---
+title: Decorators en Angular y TypeScript
+description: Aprende cómo funcionan los decorators en Angular y cómo se utilizan para definir metadatos en componentes, servicios y otros elementos.
+publishDate: 2025-08-12
+tags: ["angular"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Decorators en Angular y TypeScript
+
+Los decorators en Angular son una característica de TypeScript que permite añadir metadatos a clases, propiedades y métodos. Estos metadatos son utilizados por Angular para configurar y personalizar el comportamiento de los componentes, servicios y otros elementos de la aplicación.
+
+## ¿Cómo funciona?
+
+Los decorators son funciones que se aplican a una clase, propiedad o método utilizando el símbolo `@`. Por ejemplo, el decorator `@Component` se utiliza para definir un componente en Angular:
+
+```typescript
+import { Component } from "@angular/core";
+
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
+})
+export class AppComponent {
+  title = "mi-aplicacion-angular";
+}
+```
+
+## Vídeo completo: Decorators en Angular y TypeScript
+
+<YouTubeEmbed
+  id="EKi3k5MutuY"
+  title="Decorators en Angular y TypeScript - Programación en español"
+/>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.

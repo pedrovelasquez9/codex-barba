@@ -1,0 +1,42 @@
+---
+title: Pipes y custom pipes en Angular
+description: Aprende a crear, testear y usar pipes personalizados en Angular para transformar datos en tus aplicaciones.
+publishDate: 2025-08-12
+tags: ["angular"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Pipes y custom pipes en Angular
+
+Los pipes en Angular son una forma de transformar datos en las plantillas de tus componentes. Permiten formatear, filtrar o transformar datos de manera sencilla y reutilizable. Los pipes personalizados (custom pipes) te permiten crear transformaciones específicas que no están disponibles en los pipes integrados de Angular.
+
+## ¿Cómo funciona?
+
+Los pipes en Angular se aplican a los datos dentro de las plantillas utilizando el símbolo `|`. Por ejemplo, para formatear una fecha, puedes usar el pipe `date`:
+
+```html
+<p>{{ fecha | date:'dd/MM/yyyy' }}</p>
+```
+
+## ¿Cuándo usarlo?
+
+Utiliza pipes cuando:
+
+- Necesitas transformar datos en las plantillas de tus componentes.
+- Quieres aplicar formateos o transformaciones comunes, como fechas, números o textos.
+- Quieres crear transformaciones personalizadas que se reutilicen en diferentes partes de tu aplicación.
+
+## Vídeo completo: Pipes y custom pipes en Angular
+
+<YouTubeEmbed
+  id="HAYaflTmNLM"
+  title="Pipes y custom pipes en Angular - Programación en español"
+/>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.

@@ -1,0 +1,38 @@
+---
+title: View encapsulation en Angular
+description: Aprende cómo funciona la encapsulación de vistas en Angular y cómo afecta el estilo y el comportamiento de tus componentes.
+publishDate: 2025-08-12
+tags: ["angular"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# View encapsulation en Angular
+
+La encapsulación de vistas en Angular es el mecanismo que permite a los componentes tener su propio contexto de estilo y comportamiento, evitando que los estilos y comportamientos de un componente afecten a otros. Angular utiliza Shadow DOM y otras técnicas para lograr esta encapsulación.
+
+## ¿Cómo funciona?
+
+Angular utiliza un árbol de componentes para gestionar la encapsulación de vistas. Cada componente tiene su propio contexto de estilos y comportamientos, lo que permite que Angular aísle los estilos y comportamientos de un componente de los demás. Esto significa que los estilos aplicados a un componente no afectarán a otros componentes, incluso si están anidados.
+
+## Estrategias de encapsulación de vistas
+
+Angular ofrece tres estrategias de encapsulación de vistas:
+
+- **Default**: Esta es la estrategia predeterminada, donde Angular aplica estilos a los componentes utilizando el estilo global. Esto significa que los estilos de un componente pueden afectar a otros componentes.
+- **Emulated**: Esta estrategia utiliza técnicas de emulación para simular el comportamiento del Shadow DOM. Angular aplica estilos a los componentes de manera que se aíslen de los estilos globales, pero sin utilizar realmente el Shadow DOM.
+- **Shadow DOM**: Esta estrategia utiliza el Shadow DOM nativo del navegador para encapsular completamente los estilos y comportamientos de un componente. Esto significa que los estilos aplicados a un componente no afectarán a otros componentes, incluso si están anidados.
+
+## Vídeo completo de view encapsulation en Angular
+
+<YouTubeEmbed
+  id="5iPn_qsD5YI"
+  title="Angular view encapsulation - Programación en español"
+/>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
