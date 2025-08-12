@@ -1,0 +1,52 @@
+---
+title: Functional Route Guards en Angular
+description: Aprende cómo implementar guards funcionales en Angular para proteger rutas y mejorar la seguridad de tus aplicaciones.
+publishDate: 2025-08-12
+tags: ["angular"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Guards funcionales en Angular
+
+Los guards funcionales en Angular son una forma de proteger las rutas de tu aplicación y garantizar que solo los usuarios autorizados puedan acceder a ciertas secciones. Estos guards se implementan como funciones que devuelven un valor booleano o un observable que indica si se permite o no el acceso a la ruta.
+
+## ¿Cómo funciona?
+
+Los guards funcionales se pueden implementar utilizando el router de Angular y se pueden aplicar a nivel de ruta o a nivel de componente. Para crear un guard funcional, debes implementar la interfaz `CanActivate` y definir el método `canActivate`, que contiene la lógica para determinar si se permite el acceso a la ruta.
+
+```typescript
+import { Injectable } from "@angular/core";
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from "@angular/router";
+
+@Injectable({
+  providedIn: "root",
+})
+export class AuthGuard implements CanActivate {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    // Lógica para verificar si el usuario está autenticado
+    return true; // o false si no está autorizado
+  }
+}
+```
+
+## Vídeo completo: Guards funcionales en Angular
+
+<YouTubeEmbed
+  id="ODIw02GU9r0"
+  title="Guards funcionales en Angular - Programación en español"
+/>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.

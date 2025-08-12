@@ -1,0 +1,37 @@
+---
+title: Change detection en Angular
+description: Aprende cómo funciona el change detection en Angular y cómo optimizar el rendimiento de tus aplicaciones
+publishDate: 2025-08-12
+tags: ["angular"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Change detection en Angular
+
+El change detection en Angular es el mecanismo que permite a la aplicación detectar cambios en los datos y actualizar la vista de manera eficiente. Angular utiliza un sistema de detección de cambios basado en zonejs, que permite identificar cuándo se producen cambios en los datos y actualizar la interfaz de usuario en consecuencia.
+
+## ¿Cómo funciona?
+
+Angular utiliza un árbol de componentes para gestionar el change detection. Cada componente tiene su propio contexto de detección de cambios, lo que permite que Angular actualice solo los componentes afectados por los cambios en los datos. Cuando se produce un cambio, Angular recorre el árbol de componentes y actualiza las vistas según sea necesario.
+
+## Estrategias de change detection
+
+Angular ofrece dos estrategias de change detection:
+
+- **Default**: Esta es la estrategia predeterminada, donde Angular verifica todos los componentes en el árbol de componentes para detectar cambios. Es útil para la mayoría de las aplicaciones, pero puede ser ineficiente en aplicaciones grandes.
+- **OnPush**: Esta estrategia optimiza el rendimiento al verificar solo los componentes que tienen entradas (inputs) que han cambiado. Se utiliza cuando se sabe que los datos no cambiarán a menos que se produzcan cambios explícitos en las entradas del componente.
+
+## Vídeo completo: Change detection en Angular
+
+<YouTubeEmbed
+  id="Nsr3-GasUac"
+  title="Angular change detection explicado con ejemplos - Programación en español"
+/>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
