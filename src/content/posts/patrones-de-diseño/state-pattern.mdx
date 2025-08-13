@@ -1,0 +1,46 @@
+---
+title: Patrón state
+description: Aprende qué es el patrón state y cuándo suele usarse
+publishDate: 2025-07-30
+tags: ["patrones de diseño"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Patrón state
+
+El patrón state es un patrón de diseño de comportamiento que permite a un objeto cambiar su comportamiento cuando su estado interno cambia. Este patrón es útil cuando un objeto debe comportarse de manera diferente según su estado.
+
+## ¿Cómo funciona?
+
+El patrón state permite que un objeto altere su comportamiento cuando su estado interno cambia. Esto se logra encapsulando el comportamiento relacionado con el estado en clases separadas y delegando la responsabilidad de la lógica de estado a estas clases. El objeto principal mantiene una referencia al estado actual y delega las llamadas a métodos en el estado actual.
+
+## ¿Cuándo usarlo?
+
+Utiliza el patrón state cuando:
+
+- Necesitas que un objeto cambie su comportamiento según su estado interno.
+- Quieres evitar una gran cantidad de condicionales (if/else) para manejar diferentes estados.
+- Necesitas encapsular la lógica de estado en clases separadas para mejorar la mantenibilidad.
+
+## Vídeo completo con ejemplos prácticos
+
+<YouTubeEmbed id="1ubhIKVCd_o" title="Patrón State - Programación en español" />
+
+## Diagrama teórico
+
+<a href="/diagrams/state.png" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/diagrams/state.png"
+    alt="Diagrama de patrón state"
+    width={800}
+    height={600}
+  />
+</a>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
