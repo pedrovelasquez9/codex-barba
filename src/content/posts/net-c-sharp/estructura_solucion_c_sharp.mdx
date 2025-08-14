@@ -1,0 +1,67 @@
+---
+title: Estructura de una solución en c#
+description: Entiende como se gestiona una solución en C# con multiples proyectos
+publishDate: 2025-08-13
+tags: ["netcsharp"]
+---
+
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+## Que es una solución?
+
+Una solución en el desarrollo de c# es la entidad que agrupa los diferentes proyectos y especifíca las referencias que tienen entre ellos.
+Para crear una solución, lo necesario será ejecutar el comando siguiente
+```bash
+mkdir my_solution
+dotnet new solution
+```
+Esto nos creará un fichero con extensión sln. Ahora, podemos empezar ha añadir proyectos.
+
+## Añadir proyectos
+
+Creamos y añadimos una librería propia.
+
+```bash
+dotnet new classlib -o my_library
+dotnet sln add my_library
+```
+
+Ahora una aplicación de consola.
+
+```bash
+dotnet new console -o my_console
+dotnet sln add my_console
+```
+
+Y también una API.
+
+```bash
+dotnet new webapi -o my_console
+dotnet sln add my_console
+```
+
+### Vinculando proyectos
+
+Para hacerlo, lo que haremos será que los proyectos de la Consola y la API, tengan como referéncia el proyecto de my_library.
+De esta forma podremos usa la misma libreria desde los dos proyectos.
+
+```bash
+dotnet add my_console reference my_library
+dotnet add my_api reference my_library
+```
+
+Ahora ya podemos ejecutar los proyectos de API y Consola. SPOILER! la libreria no se puede ejecutar.
+
+```bash
+dotnet run --project my_console
+```
+
+##### Post redactado por DarkDerte (David Garcia Machado) 
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
