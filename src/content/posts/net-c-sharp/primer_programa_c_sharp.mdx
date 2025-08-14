@@ -1,0 +1,75 @@
+---
+title: Tu primer proyecto en C#
+description: Crear tu primer programa en C# .Net y explora las posibilidades
+publishDate: 2025-08-13
+tags: ["netcsharp"]
+---
+
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+## Requisitos para empezar
+
+Los requisitos para crear nuestro primer programa: 
+
+  - IDE deseado ( 
+    <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener noreferrer">VSCode</a>, 
+    <a href="https://vscodium.com/" target="_blank" rel="noopener noreferrer">VSCodium</a>, 
+    <a href="https://visualstudio.microsoft.com/es/vs/community/" target="_blank" rel="noopener noreferrer">Visual Studio Community</a>, 
+    etc).
+  - Tener instalado el <a href="https://dotnet.microsoft.com/es-es/download" target="_blank" rel="noopener noreferrer">Sdk de .Net</a>. 
+
+## Creando un proyecto desde 0 
+
+Vamos a crear un pequeño proyecto que será un "Hola Mundo". Esto nos servirá como base para empezar a aprender la sintaxis del lenguaje.
+
+Crearemos un programa que muestre en consola un mensaje de "Hola Mundo".
+
+Posteriormente, podremos incluir lectura de entradas de teclado y respuestas.
+
+### Creamos el proyecto
+
+Este paso será para crear la estructura del proyecto.
+
+```bash
+mkdir mi_primer_proyecto
+cd mi_primer_proyecto
+dotnet new console 
+```
+
+### Estructura del proyecto
+
+<img
+    src="/screenshots/c_sharp/first_program/structure.png"
+    alt="Estructura del proyecto en c#"
+    width={450}
+    height={200}
+  />
+  
+### Definiciones de los ficheros
+#### mi_primer_proyecto.csproj
+  
+Es donde se guardan las configuraciones de compilación y las dependencias de las librerias que podremos instalar mediante la herramiente de NuGet.
+
+#### Program.cs
+
+El programa principal que se ejecutará. (En un futuro podremos mirar diferentes declarativas de iniciar un programa según si usamos lenguaje alto nivel o de muy alto nivel).
+
+### Ejecutar el proyecto 
+
+Para ejeuctarlo, deberemos hace la siguiente llamada desde consola
+
+```bash
+dotnet run
+```
+
+Y con eso ya tienes tu primer programa en C# Net. ¡Felicidades!
+
+##### Post redactado por DarkDerte (David Garcia Machado) 
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
