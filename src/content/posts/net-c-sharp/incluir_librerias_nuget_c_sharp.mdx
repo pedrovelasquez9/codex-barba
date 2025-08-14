@@ -1,0 +1,110 @@
+---
+title: Incluir librerias de NuGet al proyecto
+description: Amplía las funcionalidades con librerias de NuGet para tu proyecto C# .Net
+publishDate: 2025-08-14
+tags: ["netcsharp"]
+---
+
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+## Requisitos para empezar
+
+Utilizaremos el proyecto inicial del Post <a href="./primer_programa_c_sharp" target="_blank" rel="noopener noreferrer">Tu primer proyecto en C#</a>.
+
+## Añadir librerias
+
+Hay varias formas de hacerlo, pero os enseñaremos dos formas diferentes.
+
+Las librerias disponibles, las encontraremos en el repositorio oficial de <a href="https://www.nuget.org/packages" target="_blank" rel="noopener noreferrer">NuGet</a>
+
+La libreria escogida para nosotros es <a href="https://www.nuget.org/packages/Spectre.Console">Spectre.Console</a>.
+
+### Utilizando el terminal
+
+Recordad tener la terminal en ruta del proyecto.
+
+```bash
+dotnet add package Spectre.Console --version 0.50.0
+```
+
+También podemos hacer la llamada sin especificar la versión, esta seleccionará la última release que disponga.
+
+¡Y ya tenemos la librería incluida!.
+
+Para quitar será lo mismo, pero con remove.
+
+```bash
+dotnet remove package Spectre.Console 
+```
+
+### Utilizando un plugin de VSCode
+
+Podemos encontrar varias extensiones para la gestión de las librerías.
+
+Lo haremos con la siguiente:
+
+<img
+    src="/screenshots/c_sharp/add_nuget/extension_vscode.png"
+    alt="Extensión VSCode para la gestión de librerías de c#"
+    width={700}
+  />
+
+Puedes buscar las librerías e indicar en que proyecto ponerlo.
+
+<img
+    src="/screenshots/c_sharp/add_nuget/add_nuget_package.png"
+    alt="Extensión VSCode para la gestión de librerías de c#"
+    width={700}
+  />
+
+### Utilizando la librería
+
+Ahora modificaremos el programa para utilizar la librería, pero primero deberemos ver que funcionalidades nos aporta y como usarla.
+Eso lo podemos ver desde el Nuget, donde esta el link a su web oficial o repositiorio en GitHub.
+
+Lo que haremos sera mostrar un calendario en la consola y el codigo sería el siguiente:
+
+```csharp
+using Spectre.Console;
+
+// Esta línea es para escribir en la consola de forma nativa en C#
+// Pero con la nueva librería cambia la forma de usarla
+// Console.WriteLine("Hello, World!");
+
+// Mostramos el texto
+AnsiConsole.WriteLine("Calendario");
+
+// Creamos la intancia del calendario según la fecha de hoy
+var calendario = new Calendar(DateTime.Now.Year, DateTime.Now.Month);
+
+// Le cambiamos el estilo un poco
+calendario.RoundedBorder();
+
+// Mostramos el calendario
+AnsiConsole.Write(calendario);
+
+// ponemos un línea en blanco
+AnsiConsole.WriteLine();
+```
+
+### Ejecutar el proyecto 
+
+Lo ejecutamos y el resultado que se nos muestra por consola será el siguiente:
+
+<img
+    src="/screenshots/c_sharp/add_nuget/result.png"
+    alt="Resultado del uso de la librería en c#"
+    width={500}
+  />
+
+Y con eso ya tienes tu programa en C# Net utilizando librerías. ¡Felicidades!
+
+##### Post redactado por DarkDerte (David Garcia Machado) 
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
