@@ -160,14 +160,14 @@ const categoryColors: Record<
                 <span
                   class="category-color-indicator"
                   style={`background-color: ${color.bg}; color: ${color.text};`}
-                  data-checked="true"
+                  data-checked="false"
                 />
                 <span class="category-name readable-text">{category}</span>
                 <span class="post-count">({posts.length})</span>
               </div>
             </div>
 
-            <div class="category-posts">
+            <div class="category-posts hidden">
               <div class="category-posts-inner">
                 <ul class="post-list">
                   {posts.map((post) => {
