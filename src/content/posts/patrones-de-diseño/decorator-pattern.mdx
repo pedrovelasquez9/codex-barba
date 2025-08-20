@@ -1,0 +1,49 @@
+---
+title: Patrón Decorator
+description: Aprende qué es el patrón Decorator y cuándo suele usarse
+publishDate: 2025-08-20
+tags: ["patrones de diseño"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+# Patrón Decorator
+
+El patrón Decorator es un patrón de diseño estructural que permite añadir comportamiento o responsabilidades adicionales a un objeto de forma dinámica. Este patrón es útil cuando se quiere extender la funcionalidad de un objeto sin modificar su estructura.
+
+## ¿Cómo funciona?
+
+El patrón Decorator funciona envolviendo un objeto existente con una clase decoradora que añade nuevas funcionalidades. Esto se logra mediante la implementación de la misma interfaz que el objeto original, lo que permite que el objeto decorado sea tratado como si fuera del mismo tipo que el objeto original.
+
+## ¿Cuándo usarlo?
+
+Utiliza el patrón Decorator cuando:
+
+- Necesitas añadir funcionalidades a objetos de forma dinámica.
+- Quieres evitar la creación de subclases para cada combinación posible de funcionalidades.
+- Necesitas aplicar responsabilidades adicionales a un objeto de forma transparente.
+
+## Vídeo completo con ejemplos prácticos
+
+<YouTubeEmbed
+  id="-I7f4XixuA0"
+  title="Patrón Decorator - Programación en español"
+/>
+
+## Diagrama teórico
+
+<a href="/diagrams/decorator.png" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/diagrams/decorator.png"
+    alt="Diagrama de patrón Decorator"
+    width={800}
+    height={600}
+  />
+</a>
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
