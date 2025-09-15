@@ -21,7 +21,8 @@ type ProgrammingCategory =
   | "Algoritmos y Estructuras de Datos"
   | "Arquitectura de Software"
   | "Fundamentos de programación"
-  | "Patrones de diseño";
+  | "Patrones de diseño"
+  | "Java";
 
 // Get all published posts
 const allPosts = await getCollection("posts", ({ data }) => {
@@ -54,6 +55,7 @@ function getCategoryFromTags(
     arquitectura: "Arquitectura de Software",
     fundamentos: "Fundamentos de programación",
     "patrones de diseño": "Patrones de diseño",
+    java: "Java",
   };
 
   return tags
@@ -85,6 +87,7 @@ const allCategories: ProgrammingCategory[] = [
   "Arquitectura de Software",
   "Fundamentos de programación",
   "Patrones de diseño",
+  "Java",
 ];
 
 allCategories.forEach((category) => {
@@ -129,6 +132,7 @@ const categoryColors: Record<
   "Arquitectura de Software": { bg: "#43aa8b", text: "#ffffff" },
   "Fundamentos de programación": { bg: "#f3722c", text: "#ffffff" },
   "Patrones de diseño": { bg: "#f9c74f", text: "#000000" },
+  Java: { bg: "#f9c74f", text: "#000000" },
 };
 ---
 
