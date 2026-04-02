@@ -1,0 +1,53 @@
+---
+title: Usa Ollama como un PRO
+description: Quieres usar Ollama en local o en un VPS? Empieza por aquí...
+publishDate: 2026-04-03
+tags: ["AI", "Ollama", "IA", "Inteligencia Artificial"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+## Vídeo completo
+
+<YouTubeEmbed
+  id="Qgr58MO7Zis"
+  title="Ollama como un PRO - Programación en español"
+/>
+
+# Diagrama
+
+<a href="/diagrams/ollama-AI-conceptos.png" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/diagrams/ollama-AI-conceptos.png"
+    alt="Conceptos de Ollama y AI"
+    width={800}
+    height={600}
+  />
+</a>
+
+# Ejemplo de Modelfile
+```
+FROM qwen3-coder:30b
+
+# Aumentamos la memoria para que lea archivos largos
+PARAMETER num_ctx 8192
+
+# Bajamos la temperatura para que sea preciso con el código
+PARAMETER temperature 0.1
+
+# Evitamos que repita código bucleado
+PARAMETER repeat_penalty 1.1æ
+
+SYSTEM """
+Eres un desarrollador Senior Fullstack. Tus respuestas deben ser 
+concisas, con código limpio y siguiendo las mejores prácticas. 
+Si no estás seguro de algo, pregunta antes de continuar.
+"""
+```
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
