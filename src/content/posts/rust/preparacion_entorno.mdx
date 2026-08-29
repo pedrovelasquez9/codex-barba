@@ -1,0 +1,63 @@
+---
+title: Preparación del entorno
+description: Instalación de las herramientas necesarias para desarrollar en Rust
+publishDate: 2026-08-30
+tags: ["rust"]
+---
+
+import { Image } from "astro:assets";
+import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
+
+## ¿Qué se necesita?
+
+Para desarrollar en <u>Rust</u>, se requiere de un único ejecutable que realiza la instalación de las herramientas necesarias.
+
+Este ejecutable es <u>rustup</u>, y lo encontraréis en su página oficial rustup.rs.
+(En Windows, se necesita una cosa extra. En la propia página lo tenéis informado).
+
+Ya tenéis las herramientas mínimas necesarias. Como IDE podemos usar desde Fresh (Terminal), Visual Studio Code, NeoVim, etc.
+
+## Instrucciones básicas
+
+Herramientas mínimas para crear nuestra primera aplicación: <u>rustup</u> y <u>cargo</u>.
+
+El comando <u>rustup</u> puede realizar múltiples operaciones, pero por ahora lo vamos a dejar en que, básicamente, podemos actualizar a la última versión disponible mediante la siguiente llamada:
+
+```bash
+rustup update
+```
+
+Para crear un nuevo proyecto, usaremos el comando base <u>cargo</u>:
+
+```bash
+cargo new nuevo_proyecto
+```
+
+Podemos especificar si queremos crear un ejecutable o una librería:
+
+```bash
+cargo new --bin nuevo_proyecto
+cargo new --lib nueva_libreria
+```
+
+También existen los <u>workspaces</u>, pero eso será más adelante, cuando los proyectos lo requieran.
+
+## Librerías
+
+Las librerías en <u>Rust</u> se llaman crates, y podemos consultar las disponibles oficialmente en la web de [crates.io](https://creates.io).
+
+Si deseamos incorporar una de las librerías a nuestro proyecto, deberemos hacer lo siguiente:
+
+```bash
+cargo add libreria_deseada
+```
+
+Esta es la base para empezar a desarrollar.
+
+##### Post redactado por DarkDerte (David Garcia Machado) 
+
+## Únete a la comunidad
+
+¿Te ha gustado el contenido? No olvides suscribirte a las redes de la comunidad de <a href="https://programacion-es.dev/redes/" target="_blank" rel="noopener noreferrer">Programación en español</a>
+
+¿Quieres apoyar el contenido del canal de YouTube? Hazte miembro del canal <a href="https://www.youtube.com/channel/UCNliuGyPizt7uNcdCrUoduQ/join" target="_blank" rel="noopener noreferrer">entrando a este enlace</a>.
