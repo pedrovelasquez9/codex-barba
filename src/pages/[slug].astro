@@ -1,45 +1,65 @@
 ---
-import { getCollection, getEntryBySlug } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SideMenu from "../components/SideMenu.astro";
+import { getPostCategories } from "../lib/categories";
+import {
+  formatDate,
+  getPostSlug,
+  getPostThumbnail,
+  getPostUrl,
+  getPublishedPosts,
+  getReadingMinutes,
+  type Post,
+} from "../lib/posts";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
-
-  return posts.map((post) => {
-    const slugName = post.slug.split("/").pop();
-    return {
-      params: { slug: slugName },
-      props: { slugName },
-    };
-  });
+  return posts.map((post) => ({ params: { slug: getPostSlug(post) }, props: { post } }));
 }
 
-const { slugName }: any = Astro.props;
-
-const allPosts = await getCollection("posts");
-const post = allPosts.find((p) => p.slug.split("/").pop() === slugName);
-
-if (!post) {
-  throw new Error(`No se encontró el post para el slug: ${slugName}`);
+interface Props {
+  post: Post;
 }
 
-const { Content }: any = await post.render();
+const MIN_HEADINGS_FOR_TABLE_OF_CONTENTS = 4;
+
+const { post } = Astro.props;
+const { Content, headings } = await post.render();
+
+const tableOfContents = headings.filter((heading) => heading.depth <= 2);
+const showTableOfContents = tableOfContents.length >= MIN_HEADINGS_FOR_TABLE_OF_CONTENTS;
+
+const [mainCategory] = getPostCategories(post.data.tags);
+const categoryPosts = mainCategory
+  ? (await getPublishedPosts())
+      .filter((categoryPost) => getPostCategories(categoryPost.data.tags).includes(mainCategory))
+      .reverse()
+  : [];
+const position = categoryPosts.findIndex((categoryPost) => categoryPost.slug === post.slug);
+const previousPost = position > 0 ? categoryPosts[position - 1] : undefined;
+const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
 ---
 
-<BaseLayout title={post?.data?.title} description={post?.data?.description}>
-  <SideMenu slot="side-menu" />
-  <article class="nes-container is-dark with-title article-container">
-    <p class="title">{post?.data?.title}</p>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={getPostThumbnail(post)}
+>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <article class="nes-container is-dark with-title">
+    <p class="title">{post.data.title}</p>
 
     <div class="post-meta">
-      <span class="nes-text is-primary">
-        Publicado el {post?.data?.publishDate?.toLocaleDateString("es-ES", { dateStyle: "long", timeZone: "UTC" })}
-      </span>
+      <p class="nes-text is-primary">
+        Publicado el <time datetime={post.data.publishDate.toISOString()}>
+          {formatDate(post.data.publishDate)}
+        </time> · {getReadingMinutes(post)} min de lectura
+      </p>
       {
-        post?.data?.tags && (
+        post.data.tags && (
           <div class="tags">
-            {post?.data?.tags.map((tag: string) => (
+            {post.data.tags.map((tag) => (
               <span class="nes-badge">
                 <span class="is-primary">{tag}</span>
               </span>
@@ -49,36 +69,97 @@ const { Content }: any = await post.render();
       }
     </div>
 
+    {
+      showTableOfContents && (
+        <nav class="table-of-contents" aria-labelledby="table-of-contents-title">
+          <p id="table-of-contents-title" class="table-of-contents-title">Índice</p>
+          <ol>
+            {tableOfContents.map((heading) => (
+              <li class={`depth-${heading.depth}`}>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
     <div class="post-content">
       <Content />
     </div>
 
-    <a href="/" class="nes-btn back-btn">← Ir al inicio</a>
+    {
+      (previousPost || nextPost) && (
+        <nav class="post-pager" aria-label={`Más de ${mainCategory?.name}`}>
+          {previousPost && (
+            <a href={getPostUrl(previousPost)} class="pager-link is-previous">
+              <span class="pager-label">« Anterior</span>
+              <span>{previousPost.data.title}</span>
+            </a>
+          )}
+          {nextPost && (
+            <a href={getPostUrl(nextPost)} class="pager-link is-next">
+              <span class="pager-label">Siguiente »</span>
+              <span>{nextPost.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
+
+    <a href="/" class="nes-btn back-btn">« Ir al inicio</a>
   </article>
 </BaseLayout>
 
 <script>
   document.querySelectorAll(".post-content pre").forEach((pre) => {
-    const btn = document.createElement("button");
-    btn.className = "copy-btn";
-    btn.type = "button";
-    btn.textContent = "Copiar";
-    btn.addEventListener("click", async () => {
+    const copyButton = document.createElement("button");
+    copyButton.className = "copy-btn";
+    copyButton.type = "button";
+    copyButton.textContent = "Copiar";
+    copyButton.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(pre.querySelector("code")?.innerText ?? "");
-        btn.textContent = "¡Copiado!";
+        copyButton.textContent = "¡Copiado!";
       } catch {
-        btn.textContent = "No se pudo copiar";
+        copyButton.textContent = "No se pudo copiar";
       }
-      setTimeout(() => (btn.textContent = "Copiar"), 1500);
+      setTimeout(() => (copyButton.textContent = "Copiar"), 1500);
     });
-    pre.append(btn);
+    pre.append(copyButton);
   });
 </script>
 
 <style>
-  /* NES.css fija el ancho del badge (10.5em) y posiciona el texto en absoluto:
-     aquí el badge se ajusta a su texto */
+  .reading-progress {
+    display: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .reading-progress {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1002;
+      width: 100%;
+      height: 6px;
+      background-color: var(--color-accent);
+      transform-origin: left;
+      animation: reading-progress steps(40) both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  @keyframes reading-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
   .nes-badge {
     width: auto;
     height: auto;
@@ -91,27 +172,69 @@ const { Content }: any = await post.render();
     width: auto;
   }
 
-  .back-btn {
-    margin-top: 2rem;
-  }
-
   .post-meta {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 4px solid #444;
+    border-bottom: 4px solid var(--color-surface-hover);
   }
 
   .tags {
     display: flex;
-    gap: 0.5rem;
     flex-wrap: wrap;
+    gap: 0.5rem;
     margin-top: 1rem;
   }
 
-  .post-content {
-    line-height: 1.35;
-    margin-top: 2rem;
+  .table-of-contents {
     max-width: 70ch;
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    border: 4px solid var(--color-border);
+    box-shadow: var(--shadow-pixel);
+  }
+
+  .table-of-contents-title {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-pixel);
+    font-size: 12px;
+  }
+
+  .table-of-contents ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .table-of-contents .depth-2 {
+    padding-left: 1.5rem;
+  }
+
+  .table-of-contents a {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .table-of-contents a::before {
+    content: "▶";
+    flex: none;
+    visibility: hidden;
+  }
+
+  .table-of-contents a:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .table-of-contents a:hover::before,
+  .table-of-contents a:focus-visible::before {
+    visibility: visible;
+  }
+
+  .post-content {
+    max-width: 70ch;
+    margin-top: 2rem;
+    line-height: 1.35;
   }
 
   .post-content :global(h1),
@@ -130,12 +253,11 @@ const { Content }: any = await post.render();
     height: auto;
   }
 
-  /* Bloque de código con marco NES: etiqueta de lenguaje + botón de copiar */
   .post-content :global(pre) {
     position: relative;
     padding: 0 1rem 1rem;
-    border: 4px solid #adafbc;
-    box-shadow: 4px 4px 0 #000;
+    border: 4px solid var(--color-border);
+    box-shadow: var(--shadow-pixel);
     overflow-x: auto;
   }
 
@@ -144,11 +266,11 @@ const { Content }: any = await post.render();
     display: block;
     margin: 0 -1rem 1rem;
     padding: 0.5rem 1rem;
-    border-bottom: 4px solid #adafbc;
+    border-bottom: 4px solid var(--color-border);
+    color: var(--color-muted);
     font-family: var(--font-pixel);
     font-size: 10px;
     text-transform: uppercase;
-    color: #adafbc;
   }
 
   .post-content :global(pre[data-language="plaintext"])::before {
@@ -162,7 +284,7 @@ const { Content }: any = await post.render();
     padding: 0.25rem 0.5rem;
     border: 0;
     background: none;
-    color: #adafbc;
+    color: var(--color-muted);
     font-family: var(--font-pixel);
     font-size: 10px;
     cursor: pointer;
@@ -170,13 +292,55 @@ const { Content }: any = await post.render();
 
   .post-content :global(.copy-btn:hover),
   .post-content :global(.copy-btn:focus-visible) {
-    color: #fff;
+    color: var(--color-text);
+  }
+
+  .post-pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    color: var(--color-text);
+    text-decoration: none;
+    border: 4px solid var(--color-border);
+    box-shadow: var(--shadow-pixel);
+  }
+
+  .pager-link:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-color: var(--color-text);
+  }
+
+  .pager-link.is-next {
+    grid-column: 2;
+    text-align: right;
+  }
+
+  .pager-label {
+    color: var(--color-muted);
+    font-family: var(--font-pixel);
+    font-size: 10px;
+  }
+
+  .back-btn {
+    margin-top: 2rem;
   }
 
   @media (max-width: 676px) {
-    .article-container {
-      padding: 1rem;
-      border-color: transparent;
+    .post-pager {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pager-link.is-next {
+      grid-column: 1;
     }
 
     .back-btn {
