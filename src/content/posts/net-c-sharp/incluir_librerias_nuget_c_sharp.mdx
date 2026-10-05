@@ -6,7 +6,7 @@ tags: ["netcsharp"]
 ---
 
 
-import { Image } from "astro:assets";
+import PostImage from "../../../components/PostImage.astro";
 import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
 
 ## Requisitos para empezar
@@ -45,19 +45,11 @@ Podemos encontrar varias extensiones para la gestión de las librerías.
 
 Lo haremos con la siguiente:
 
-<img
-    src="/screenshots/c_sharp/add_nuget/extension_vscode.png"
-    alt="Extensión VSCode para la gestión de librerías de c#"
-    width={700}
-  />
+<PostImage src="/screenshots/c_sharp/add_nuget/extension_vscode.png" alt="Extensión VSCode para la gestión de librerías de c#" maxWidth={700} />
 
 Puedes buscar las librerías e indicar en que proyecto ponerlo.
 
-<img
-    src="/screenshots/c_sharp/add_nuget/add_nuget_package.png"
-    alt="Extensión VSCode para la gestión de librerías de c#"
-    width={700}
-  />
+<PostImage src="/screenshots/c_sharp/add_nuget/add_nuget_package.png" alt="Extensión VSCode para la gestión de librerías de c#" maxWidth={700} />
 
 ### Utilizando la librería
 
@@ -93,11 +85,7 @@ AnsiConsole.WriteLine();
 
 Lo ejecutamos y el resultado que se nos muestra por consola será el siguiente:
 
-<img
-    src="/screenshots/c_sharp/add_nuget/result.png"
-    alt="Resultado del uso de la librería en c#"
-    width={500}
-  />
+<PostImage src="/screenshots/c_sharp/add_nuget/result.png" alt="Resultado del uso de la librería en c#" maxWidth={500} />
 
 Y con eso ya tienes tu programa en C# Net utilizando librerías. ¡Felicidades!
 

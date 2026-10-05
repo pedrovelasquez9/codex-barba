@@ -25,6 +25,16 @@ const categorySections = categories
 </button>
 
 <aside id="side-menu" class="side-menu nes-container is-dark">
+  <form class="site-search" action="/buscar" role="search">
+    <input
+      class="nes-input is-dark"
+      type="search"
+      name="q"
+      placeholder="Buscar..."
+      aria-label="Buscar en Codex Barba"
+    />
+  </form>
+
   <p class="title categories-title">Categorías</p>
 
   <div class="categories-list">
@@ -125,6 +135,18 @@ const categorySections = categories
 
   .side-menu::after {
     display: none;
+  }
+
+  .site-search {
+    margin-bottom: 1.5rem;
+  }
+
+  .site-search input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.25rem 0.5rem;
+    font-family: var(--font-body);
+    font-size: 1.15rem;
   }
 
   .categories-title {

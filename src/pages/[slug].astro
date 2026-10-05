@@ -1,6 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import CategoryChip from "../components/CategoryChip.astro";
 import { getPostCategories } from "../lib/categories";
 import {
   formatDate,
@@ -13,7 +13,7 @@ import {
 } from "../lib/posts";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
+  const posts = await getPublishedPosts();
   return posts.map((post) => ({ params: { slug: getPostSlug(post) }, props: { post } }));
 }
 
@@ -29,7 +29,8 @@ const { Content, headings } = await post.render();
 const tableOfContents = headings.filter((heading) => heading.depth <= 2);
 const showTableOfContents = tableOfContents.length >= MIN_HEADINGS_FOR_TABLE_OF_CONTENTS;
 
-const [mainCategory] = getPostCategories(post.data.tags);
+const postCategories = getPostCategories(post.data.tags);
+const [mainCategory] = postCategories;
 const categoryPosts = mainCategory
   ? (await getPublishedPosts())
       .filter((categoryPost) => getPostCategories(categoryPost.data.tags).includes(mainCategory))
@@ -47,22 +48,20 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
 >
   <div class="reading-progress" aria-hidden="true"></div>
 
-  <article class="nes-container is-dark with-title">
-    <p class="title">{post.data.title}</p>
+  <article class="nes-container is-dark with-title" data-pagefind-body>
+    <p class="title" data-pagefind-meta="title">{post.data.title}</p>
 
-    <div class="post-meta">
+    <div class="post-meta" data-pagefind-ignore>
       <p class="nes-text is-primary">
         Publicado el <time datetime={post.data.publishDate.toISOString()}>
           {formatDate(post.data.publishDate)}
         </time> · {getReadingMinutes(post)} min de lectura
       </p>
       {
-        post.data.tags && (
-          <div class="tags">
-            {post.data.tags.map((tag) => (
-              <span class="nes-badge">
-                <span class="is-primary">{tag}</span>
-              </span>
+        postCategories.length > 0 && (
+          <div class="post-categories">
+            {postCategories.map((category) => (
+              <CategoryChip category={category} />
             ))}
           </div>
         )
@@ -71,7 +70,7 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
 
     {
       showTableOfContents && (
-        <nav class="table-of-contents" aria-labelledby="table-of-contents-title">
+        <nav class="table-of-contents" data-pagefind-ignore aria-labelledby="table-of-contents-title">
           <p id="table-of-contents-title" class="table-of-contents-title">Índice</p>
           <ol>
             {tableOfContents.map((heading) => (
@@ -90,7 +89,7 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
 
     {
       (previousPost || nextPost) && (
-        <nav class="post-pager" aria-label={`Más de ${mainCategory?.name}`}>
+        <nav class="post-pager" data-pagefind-ignore aria-label={`Más de ${mainCategory?.name}`}>
           {previousPost && (
             <a href={getPostUrl(previousPost)} class="pager-link is-previous">
               <span class="pager-label">« Anterior</span>
@@ -107,7 +106,7 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
       )
     }
 
-    <a href="/" class="nes-btn back-btn">« Ir al inicio</a>
+    <a href="/" class="nes-btn back-btn" data-pagefind-ignore>« Ir al inicio</a>
   </article>
 </BaseLayout>
 
@@ -160,25 +159,13 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
     }
   }
 
-  .nes-badge {
-    width: auto;
-    height: auto;
-    font-size: 12px;
-  }
-
-  .nes-badge span {
-    position: static;
-    display: inline-block;
-    width: auto;
-  }
-
   .post-meta {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
     border-bottom: 4px solid var(--color-surface-hover);
   }
 
-  .tags {
+  .post-categories {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;

@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Página no encontrada">
+  <section class="nes-container is-dark with-title not-found">
+    <h1 class="title">Error 404</h1>
+    <p class="game-over">GAME OVER</p>
+    <p>La página que buscas no existe o ha cambiado de sitio.</p>
+    <div class="actions">
+      <a href="/" class="nes-btn is-primary">Continuar</a>
+      <a href="/blog" class="nes-btn">Ver el blog</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    text-align: center;
+  }
+
+  .game-over {
+    margin: 2rem 0;
+    color: #e52521;
+    font-family: var(--font-pixel);
+    font-size: clamp(28px, 6vw, 56px);
+    text-shadow: var(--shadow-pixel);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+</style>

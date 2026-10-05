@@ -5,8 +5,7 @@ publishDate: 2025-08-13
 tags: ["netcsharp"]
 ---
 
-
-import { Image } from "astro:assets";
+import PostImage from "../../../components/PostImage.astro";
 import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
 
 ## Requisitos para empezar
@@ -40,12 +39,7 @@ dotnet new console
 
 ### Estructura del proyecto
 
-<img
-    src="/screenshots/c_sharp/first_program/structure.png"
-    alt="Estructura del proyecto en c#"
-    width={450}
-    height={200}
-  />
+<PostImage src="/screenshots/c_sharp/first_program/structure.png" alt="Estructura del proyecto en c#" maxWidth={450} />
   
 ### Definiciones de los ficheros
 #### mi_primer_proyecto.csproj
