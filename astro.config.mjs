@@ -11,7 +11,7 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       // Choose a theme that matches the retro aesthetic
-      theme: 'github-dark',
+      theme: 'github-dark-high-contrast',
       // Optional: wrap code blocks to improve readability
       wrap: true,
     },

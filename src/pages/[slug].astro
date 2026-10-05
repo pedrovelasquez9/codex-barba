@@ -34,7 +34,7 @@ const { Content }: any = await post.render();
 
     <div class="post-meta">
       <span class="nes-text is-primary">
-        Posted on: {post?.data?.publishDate?.toLocaleDateString()}
+        Publicado el {post?.data?.publishDate?.toLocaleDateString("es-ES", { dateStyle: "long", timeZone: "UTC" })}
       </span>
       {
         post?.data?.tags && (
@@ -57,8 +57,37 @@ const { Content }: any = await post.render();
   </article>
 </BaseLayout>
 
+<script>
+  document.querySelectorAll(".post-content pre").forEach((pre) => {
+    const btn = document.createElement("button");
+    btn.className = "copy-btn";
+    btn.type = "button";
+    btn.textContent = "Copiar";
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(pre.querySelector("code")?.innerText ?? "");
+        btn.textContent = "¡Copiado!";
+      } catch {
+        btn.textContent = "No se pudo copiar";
+      }
+      setTimeout(() => (btn.textContent = "Copiar"), 1500);
+    });
+    pre.append(btn);
+  });
+</script>
+
 <style>
+  /* NES.css fija el ancho del badge (10.5em) y posiciona el texto en absoluto:
+     aquí el badge se ajusta a su texto */
+  .nes-badge {
+    width: auto;
+    height: auto;
+    font-size: 12px;
+  }
+
   .nes-badge span {
+    position: static;
+    display: inline-block;
     width: auto;
   }
 
@@ -76,13 +105,13 @@ const { Content }: any = await post.render();
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
-    width: min-content;
     margin-top: 1rem;
   }
 
   .post-content {
-    line-height: 1.6;
+    line-height: 1.35;
     margin-top: 2rem;
+    max-width: 70ch;
   }
 
   .post-content :global(h1),
@@ -98,35 +127,56 @@ const { Content }: any = await post.render();
 
   .post-content :global(img) {
     max-width: 100%;
-    image-rendering: pixelated;
+    height: auto;
   }
 
+  /* Bloque de código con marco NES: etiqueta de lenguaje + botón de copiar */
   .post-content :global(pre) {
-    background-color: #000;
-    padding: 1rem;
-    border-radius: 4px;
+    position: relative;
+    padding: 0 1rem 1rem;
+    border: 4px solid #adafbc;
+    box-shadow: 4px 4px 0 #000;
     overflow-x: auto;
+  }
+
+  .post-content :global(pre)::before {
+    content: attr(data-language);
+    display: block;
+    margin: 0 -1rem 1rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 4px solid #adafbc;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #adafbc;
+  }
+
+  .post-content :global(pre[data-language="plaintext"])::before {
+    content: "texto";
+  }
+
+  .post-content :global(.copy-btn) {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    background: none;
+    color: #adafbc;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  .post-content :global(.copy-btn:hover),
+  .post-content :global(.copy-btn:focus-visible) {
+    color: #fff;
   }
 
   @media (max-width: 676px) {
     .article-container {
       padding: 1rem;
       border-color: transparent;
-    }
-
-    .tags {
-      width: 100%;
-      flex-direction: column;
-    }
-
-    .nes-badge {
-    }
-
-    .nes-badge span {
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .back-btn {

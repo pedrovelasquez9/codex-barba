@@ -129,14 +129,14 @@ const categoryColors: Record<
   Astro: { bg: "#ff5c00", text: "#ffffff" },
   "Node.js": { bg: "#8cc84b", text: "#ffffff" },
   "Net C#": { bg: "#db03fc", text: "#ffffff" },
-  Rust: {bg:"#ffc0cb", text:"#ffffff"},
+  Rust: { bg: "#dea584", text: "#000000" },
   "Soft skills": { bg: "#f9c74f", text: "#000000" },
   "Documentación de Software": { bg: "#f94144", text: "#ffffff" },
   "Algoritmos y Estructuras de Datos": { bg: "#577590", text: "#ffffff" },
   "Arquitectura de Software": { bg: "#43aa8b", text: "#ffffff" },
   "Fundamentos de programación": { bg: "#f3722c", text: "#ffffff" },
-  "Patrones de diseño": { bg: "#f9c74f", text: "#000000" },
-  Java: { bg: "#f9c74f", text: "#000000" },
+  "Patrones de diseño": { bg: "#b388eb", text: "#000000" },
+  Java: { bg: "#f89820", text: "#000000" },
 };
 ---
 
@@ -147,7 +147,7 @@ const categoryColors: Record<
 </div>
 
 <aside id="sideMenu" class="side-menu nes-container is-dark">
-  <p class="title categories-title">Categories</p>
+  <p class="title categories-title">Categorías</p>
 
   <div class="categories-list">
     {
@@ -222,12 +222,13 @@ const categoryColors: Record<
 
     document.addEventListener("click", (event) => {
       const target = event.target as Node;
-      const isSmallScreen = window.innerWidth <= 768;
+      const isSmallScreen = window.innerWidth <= 1024;
 
       if (isSmallScreen && sideMenu && menuToggleBtn) {
         if (!sideMenu.contains(target) && !menuToggleBtn.contains(target)) {
           sideMenu.classList.remove("active");
           menuToggleBtn.classList.remove("active");
+          sideMenuIcon?.classList.remove("close");
         }
       }
     });
@@ -326,6 +327,7 @@ const categoryColors: Record<
   }
 
   .side-menu {
+    font-family: var(--font-pixel);
     margin-bottom: 1.5rem;
     font-size: 0.8rem;
     padding: 1rem;
@@ -491,7 +493,8 @@ const categoryColors: Record<
     color: #fff;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 0.7rem;
+    font-family: var(--font-body);
+    font-size: 1.15rem;
     text-wrap: auto;
     line-height: 1.2;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
@@ -563,17 +566,10 @@ const categoryColors: Record<
     .side-menu.active {
       transform: translateX(0);
       opacity: 1;
-    }
-
-    .side-menu.active::after {
-      content: "";
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: -1;
+      /* Fondo oscurecido: un ::after fijo no sirve dentro de un elemento con transform */
+      box-shadow:
+        4px 0 15px rgba(0, 0, 0, 0.7),
+        0 0 0 100vmax rgba(0, 0, 0, 0.5);
     }
 
     .categories-list {

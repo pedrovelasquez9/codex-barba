@@ -23,10 +23,8 @@ const {
     <title>{title} | Codex Barba</title>
     <meta name="description" content={description} />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/logo 8bit.webp" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/logo 8bit.webp" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/logo 8bit.webp" />
+    <link rel="icon" type="image/webp" href="/logo 8bit.webp" />
+    <link rel="apple-touch-icon" href="/logo 8bit.webp" />
     <link rel="manifest" href="/site.webmanifest" />
     <!-- Theme Color -->
     <meta name="theme-color" content="#212529" />
@@ -37,17 +35,78 @@ const {
     />
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap"
       rel="stylesheet"
     />
     <script
       defer
       data-domain="codex-barba.com"
       src="https://plausible.io/js/script.js"></script>
+    <style is:global>
+      /* Tipografía: pixel (Press Start 2P) solo para títulos e interfaz,
+         VT323 para leer y monoespaciada del sistema para código. */
+      :root {
+        --font-pixel: "Press Start 2P", monospace;
+        --font-body: "VT323", monospace;
+        --font-code: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas,
+          "Liberation Mono", monospace;
+      }
+
+      body {
+        font-family: var(--font-body);
+        font-size: clamp(22px, 1.9vw, 26px);
+        line-height: 1.35;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .title,
+      .nes-btn,
+      .nes-badge {
+        font-family: var(--font-pixel);
+        line-height: 1.4;
+      }
+
+      h1 {
+        font-size: clamp(18px, 2.4vw, 26px);
+      }
+      h2 {
+        font-size: clamp(16px, 2vw, 20px);
+      }
+      h3 {
+        font-size: 16px;
+      }
+      h4,
+      h5,
+      h6 {
+        font-size: 14px;
+      }
+      .title,
+      .nes-btn {
+        font-size: clamp(12px, 1.1vw, 16px);
+      }
+
+      pre,
+      code,
+      kbd,
+      samp {
+        font-family: var(--font-code);
+      }
+      code {
+        font-size: 0.8em;
+      }
+      pre {
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      pre code {
+        font-size: inherit;
+      }
+    </style>
     <style>
       html,
       body {
@@ -57,31 +116,9 @@ const {
       }
 
       body {
-        font-family: "Press Start 2P";
         padding: 0.5rem;
         background-color: #212529;
         color: #fff;
-        font-size: clamp(12px, 1.4vw, 18px) !important;
-      }
-
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        font-family: "Press Start 2P";
-        line-height: 1.4;
-        font-size: clamp(14px, 1.8rem, 20px) !important;
-      }
-
-      p,
-      li,
-      a {
-        font-family: "Press Start 2P";
-        font-size: clamp(14px, 1.4rem, 1rem) !important;
-        line-height: 1.4;
-        letter-spacing: 0.5px;
       }
 
       .container {

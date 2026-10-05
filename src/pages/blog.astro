@@ -33,7 +33,7 @@ const posts = allPosts.sort((a, b) => {
                   src={post.data.image}
                   alt={post.data.title}
                   class="post-image"
-                  style="image-rendering: pixelated; width: 100%; margin-bottom: 1rem;"
+                  style="width: 100%; height: auto; margin-bottom: 1rem;"
                 />
               )}
 
@@ -41,7 +41,7 @@ const posts = allPosts.sort((a, b) => {
 
               {post.data.publishDate && (
                 <p class="nes-text is-disabled">
-                  {post.data.publishDate.toLocaleDateString()}
+                  {post.data.publishDate.toLocaleDateString("es-ES", { dateStyle: "long", timeZone: "UTC" })}
                 </p>
               )}
 
