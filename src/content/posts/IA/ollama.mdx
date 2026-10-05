@@ -5,7 +5,7 @@ publishDate: 2026-04-03
 tags: ["AI", "Ollama", "IA", "Inteligencia Artificial"]
 ---
 
-import { Image } from "astro:assets";
+import PostImage from "../../../components/PostImage.astro";
 import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
 
 ## Vídeo completo
@@ -15,18 +15,11 @@ import YouTubeEmbed from "../../../components/YoutubeEmbed.astro";
   title="Ollama como un PRO - Programación en español"
 />
 
-# Diagrama
+## Diagrama
 
-<a href="/diagrams/ollama-AI-conceptos.png" target="_blank" rel="noopener noreferrer">
-  <img
-    src="/diagrams/ollama-AI-conceptos.png"
-    alt="Conceptos de Ollama y AI"
-    width={800}
-    height={600}
-  />
-</a>
+<PostImage src="/diagrams/ollama-AI-conceptos.png" alt="Conceptos de Ollama y AI" />
 
-# Ejemplo de Modelfile
+## Ejemplo de Modelfile
 ```
 FROM qwen3-coder:30b
 

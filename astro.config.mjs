@@ -1,9 +1,11 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [mdx()],
+  integrations: [mdx(), sitemap()],
+  compressHTML: true,
   // Site configuration
   site: 'https://codex-barba.com', // Replace with your actual domain
   
@@ -11,7 +13,7 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       // Choose a theme that matches the retro aesthetic
-      theme: 'github-dark',
+      theme: 'github-dark-high-contrast',
       // Optional: wrap code blocks to improve readability
       wrap: true,
     },

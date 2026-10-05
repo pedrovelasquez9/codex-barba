@@ -1,0 +1,37 @@
+---
+import path from "node:path";
+import sharp from "sharp";
+
+interface Props {
+  src: string;
+  alt: string;
+  maxWidth?: number;
+}
+
+const { src, alt, maxWidth } = Astro.props;
+const { width, height } = await sharp(path.join(process.cwd(), "public", src)).metadata();
+---
+
+<a href={src} target="_blank" rel="noopener noreferrer" class="post-image">
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading="lazy"
+    decoding="async"
+    style={maxWidth ? `max-width: min(100%, ${maxWidth}px)` : undefined}
+  />
+</a>
+
+<style>
+  .post-image {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .post-image img {
+    display: block;
+  }
+</style>

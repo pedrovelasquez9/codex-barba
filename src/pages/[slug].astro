@@ -1,88 +1,229 @@
 ---
-import { getCollection, getEntryBySlug } from "astro:content";
+import { render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SideMenu from "../components/SideMenu.astro";
+import CategoryChip from "../components/CategoryChip.astro";
+import ShareButton from "../components/ShareButton.astro";
+import { getPostCategories } from "../lib/categories";
+import {
+  formatDate,
+  getPostSlug,
+  getPostThumbnail,
+  getPostUrl,
+  getPublishedPosts,
+  getReadingMinutes,
+  type Post,
+} from "../lib/posts";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
-
-  return posts.map((post) => {
-    const slugName = post.slug.split("/").pop();
-    return {
-      params: { slug: slugName },
-      props: { slugName },
-    };
-  });
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { slug: getPostSlug(post) }, props: { post } }));
 }
 
-const { slugName }: any = Astro.props;
-
-const allPosts = await getCollection("posts");
-const post = allPosts.find((p) => p.slug.split("/").pop() === slugName);
-
-if (!post) {
-  throw new Error(`No se encontró el post para el slug: ${slugName}`);
+interface Props {
+  post: Post;
 }
 
-const { Content }: any = await post.render();
+const MIN_HEADINGS_FOR_TABLE_OF_CONTENTS = 4;
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const postUrl = new URL(Astro.url.pathname, Astro.site).href;
+
+const tableOfContents = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const showTableOfContents = tableOfContents.length >= MIN_HEADINGS_FOR_TABLE_OF_CONTENTS;
+
+const postCategories = getPostCategories(post.data.tags);
+const [mainCategory] = postCategories;
+const categoryPosts = mainCategory
+  ? (await getPublishedPosts())
+      .filter((categoryPost) => getPostCategories(categoryPost.data.tags).includes(mainCategory))
+      .reverse()
+  : [];
+const position = categoryPosts.findIndex((categoryPost) => categoryPost.id === post.id);
+const previousPost = position > 0 ? categoryPosts[position - 1] : undefined;
+const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
 ---
 
-<BaseLayout title={post?.data?.title} description={post?.data?.description}>
-  <SideMenu slot="side-menu" />
-  <article class="nes-container is-dark with-title article-container">
-    <p class="title">{post?.data?.title}</p>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={getPostThumbnail(post)}
+>
+  <div class="reading-progress" aria-hidden="true"></div>
 
-    <div class="post-meta">
-      <span class="nes-text is-primary">
-        Posted on: {post?.data?.publishDate?.toLocaleDateString()}
-      </span>
+  <article class="nes-container is-dark with-title" data-pagefind-body>
+    <h1 class="title" data-pagefind-meta="title">{post.data.title}</h1>
+
+    <div class="post-meta" data-pagefind-ignore>
+      <p class="nes-text is-primary">
+        Publicado el <time datetime={post.data.publishDate.toISOString()}>
+          {formatDate(post.data.publishDate)}
+        </time> · {getReadingMinutes(post)} min de lectura
+      </p>
       {
-        post?.data?.tags && (
-          <div class="tags">
-            {post?.data?.tags.map((tag: string) => (
-              <span class="nes-badge">
-                <span class="is-primary">{tag}</span>
-              </span>
+        postCategories.length > 0 && (
+          <div class="post-categories">
+            {postCategories.map((category) => (
+              <CategoryChip category={category} />
             ))}
           </div>
         )
       }
+      <ShareButton title={post.data.title} url={postUrl} />
     </div>
+
+    {
+      showTableOfContents && (
+        <nav class="table-of-contents" data-pagefind-ignore aria-labelledby="table-of-contents-title">
+          <p id="table-of-contents-title" class="table-of-contents-title">Índice</p>
+          <ol>
+            {tableOfContents.map((heading) => (
+              <li class={`depth-${heading.depth}`}>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
 
     <div class="post-content">
       <Content />
     </div>
 
-    <a href="/" class="nes-btn back-btn">← Ir al inicio</a>
+    {
+      (previousPost || nextPost) && (
+        <nav class="post-pager" data-pagefind-ignore aria-label={`Más de ${mainCategory?.name}`}>
+          {previousPost && (
+            <a href={getPostUrl(previousPost)} class="pager-link is-previous">
+              <span class="pager-label">« Anterior</span>
+              <span>{previousPost.data.title}</span>
+            </a>
+          )}
+          {nextPost && (
+            <a href={getPostUrl(nextPost)} class="pager-link is-next">
+              <span class="pager-label">Siguiente »</span>
+              <span>{nextPost.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
+
+    <a href="/" class="nes-btn back-btn" data-pagefind-ignore>« Ir al inicio</a>
   </article>
 </BaseLayout>
 
+<script>
+  import { copyWithFeedback } from "../lib/clipboard";
+
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll(".post-content pre").forEach((pre) => {
+      const copyButton = document.createElement("button");
+      copyButton.className = "copy-btn";
+      copyButton.type = "button";
+      copyButton.textContent = "Copiar";
+      copyButton.addEventListener("click", () =>
+        copyWithFeedback(copyButton, pre.querySelector("code")?.innerText ?? "")
+      );
+      pre.append(copyButton);
+    });
+  });
+</script>
+
 <style>
-  .nes-badge span {
-    width: auto;
+  .reading-progress {
+    display: none;
   }
 
-  .back-btn {
-    margin-top: 2rem;
+  @supports (animation-timeline: scroll()) {
+    .reading-progress {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1002;
+      width: 100%;
+      height: 6px;
+      background-color: var(--color-accent);
+      transform-origin: left;
+      animation: reading-progress steps(40) both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  @keyframes reading-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
   }
 
   .post-meta {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 4px solid #444;
+    border-bottom: 4px solid var(--color-surface-hover);
   }
 
-  .tags {
+  .post-categories {
     display: flex;
-    gap: 0.5rem;
     flex-wrap: wrap;
-    width: min-content;
+    gap: 0.5rem;
     margin-top: 1rem;
   }
 
-  .post-content {
-    line-height: 1.6;
+  .table-of-contents {
+    max-width: 70ch;
     margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    border: 4px solid var(--color-border);
+    box-shadow: var(--shadow-pixel);
+  }
+
+  .table-of-contents-title {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-pixel);
+    font-size: 12px;
+  }
+
+  .table-of-contents ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .table-of-contents .depth-3 {
+    padding-left: 1.5rem;
+  }
+
+  .table-of-contents a {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .table-of-contents a::before {
+    content: "▶";
+    flex: none;
+    visibility: hidden;
+  }
+
+  .table-of-contents a:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .table-of-contents a:hover::before,
+  .table-of-contents a:focus-visible::before {
+    visibility: visible;
+  }
+
+  .post-content {
+    max-width: 70ch;
+    margin-top: 2rem;
+    line-height: 1.35;
   }
 
   .post-content :global(h1),
@@ -98,35 +239,97 @@ const { Content }: any = await post.render();
 
   .post-content :global(img) {
     max-width: 100%;
-    image-rendering: pixelated;
+    height: auto;
   }
 
   .post-content :global(pre) {
-    background-color: #000;
-    padding: 1rem;
-    border-radius: 4px;
+    position: relative;
+    padding: 0 1rem 1rem;
+    border: 4px solid var(--color-border);
+    box-shadow: var(--shadow-pixel);
     overflow-x: auto;
   }
 
+  .post-content :global(pre)::before {
+    content: attr(data-language);
+    display: block;
+    margin: 0 -1rem 1rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 4px solid var(--color-border);
+    color: var(--color-muted);
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+
+  .post-content :global(pre[data-language="plaintext"])::before {
+    content: "texto";
+  }
+
+  .post-content :global(.copy-btn) {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    background: none;
+    color: var(--color-muted);
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  .post-content :global(.copy-btn:hover),
+  .post-content :global(.copy-btn:focus-visible) {
+    color: var(--color-text);
+  }
+
+  .post-pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    color: var(--color-text);
+    text-decoration: none;
+    border: 4px solid var(--color-border);
+    box-shadow: var(--shadow-pixel);
+  }
+
+  .pager-link:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-color: var(--color-text);
+  }
+
+  .pager-link.is-next {
+    grid-column: 2;
+    text-align: right;
+  }
+
+  .pager-label {
+    color: var(--color-muted);
+    font-family: var(--font-pixel);
+    font-size: 10px;
+  }
+
+  .back-btn {
+    margin-top: 2rem;
+  }
+
   @media (max-width: 676px) {
-    .article-container {
-      padding: 1rem;
-      border-color: transparent;
+    .post-pager {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .tags {
-      width: 100%;
-      flex-direction: column;
-    }
-
-    .nes-badge {
-    }
-
-    .nes-badge span {
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .pager-link.is-next {
+      grid-column: 1;
     }
 
     .back-btn {

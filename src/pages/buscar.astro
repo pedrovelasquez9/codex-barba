@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Buscar" description="Busca artículos, diagramas y vídeos en Codex Barba.">
+  <section class="nes-container is-dark with-title">
+    <h1 class="title">Buscar</h1>
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+    <div id="search" class="search"></div>
+  </section>
+</BaseLayout>
+
+<script>
+  interface PagefindSearch {
+    triggerSearch(term: string): void;
+  }
+
+  type PagefindUIConstructor = new (options: object) => PagefindSearch;
+
+  let pagefindUILoader: Promise<PagefindUIConstructor> | undefined;
+
+  function loadPagefindUI() {
+    pagefindUILoader ??= new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "/pagefind/pagefind-ui.js";
+      script.addEventListener("load", () => {
+        resolve((window as unknown as { PagefindUI: PagefindUIConstructor }).PagefindUI);
+      });
+      document.head.append(script);
+    });
+    return pagefindUILoader;
+  }
+
+  document.addEventListener("astro:page-load", async () => {
+    if (!document.querySelector("#search")) return;
+
+    const PagefindUI = await loadPagefindUI();
+    const search = new PagefindUI({
+      element: "#search",
+      showImages: false,
+      showSubResults: true,
+      autofocus: true,
+    });
+    const query = new URLSearchParams(location.search).get("q");
+    if (query) search.triggerSearch(query);
+  });
+</script>
+
+<style>
+  .search {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--color-accent);
+    --pagefind-ui-text: var(--color-text);
+    --pagefind-ui-background: var(--color-bg);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-tag: var(--color-surface);
+    --pagefind-ui-border-width: 4px;
+    --pagefind-ui-border-radius: 0;
+    --pagefind-ui-font: var(--font-body);
+  }
+</style>

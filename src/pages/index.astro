@@ -1,19 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import SideMenu from "../components/SideMenu.astro";
+import PostCard from "../components/PostCard.astro";
+import { getPublishedPosts } from "../lib/posts";
 
+const RECENT_POSTS_COUNT = 6;
 
-const allPosts = await getCollection("posts");
-const posts = allPosts.sort((a, b) => {
-  const dateA = a.data.publishDate || new Date(0);
-  const dateB = b.data.publishDate || new Date(0);
-  return dateB.getTime() - dateA.getTime();
-});
+const [latestPost, ...olderPosts] = await getPublishedPosts();
+const recentPosts = olderPosts.slice(0, RECENT_POSTS_COUNT);
 ---
 
 <BaseLayout title="Inicio">
-  <SideMenu slot="side-menu" />
   <section class="nes-container is-dark with-title">
     <h1 class="title">Bienvenido a Codex Barba</h1>
     <div class="nes-balloon from-left is-dark">
@@ -22,7 +18,7 @@ const posts = allPosts.sort((a, b) => {
           href="https://programacion-es.dev"
           target="_blank"
           >Programación en español <img
-            src="logo 8bit.webp"
+            src="/logo 8bit.webp"
             alt="logo programación en español"
             class="pee-logo"
           /></a
@@ -31,32 +27,27 @@ const posts = allPosts.sort((a, b) => {
     </div>
   </section>
 
-  <section class="nes-container is-dark with-title" style="margin-top: 2rem;">
-    <p class="title">Contenido reciente</p>
+  {
+    latestPost && (
+      <section class="home-section">
+        <h2 class="section-title">Lo último</h2>
+        <PostCard post={latestPost} featured />
+      </section>
+    )
+  }
 
-    {
-      posts.length > 0 ? (
-        <ul class="nes-list is-disc">
-          {posts.map((post) => {
-            const slugName = post.slug.split("/").pop();
-            return (
-              <li>
-                <a href={`/${slugName}`} class="nes-text is-primary">
-                  {post.data.title}
-                </a>
-                <p>{post.data.description}</p>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p>No hay entradas recientes, vuelve más tarde =)</p>
-      )
-    }
-
-    <a href="/blog" class="nes-btn is-primary" style="margin-top: 1rem;"
-      >Ver todas las entradas</a
-    >
+  <section class="home-section">
+    <h2 class="section-title">Contenido reciente</h2>
+    <ul class="post-grid">
+      {
+        recentPosts.map((post) => (
+          <li>
+            <PostCard post={post} />
+          </li>
+        ))
+      }
+    </ul>
+    <a href="/blog" class="nes-btn is-primary all-posts-link">Ver todas las entradas</a>
   </section>
 </BaseLayout>
 
@@ -67,30 +58,21 @@ const posts = allPosts.sort((a, b) => {
     vertical-align: baseline;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: "Press Start 2P";
-    line-height: 1.4;
-    font-size: clamp(14px, 1.8rem, 20px) !important;
+  .home-section {
+    margin-top: 3rem;
   }
 
-  p,
-  li,
-  a {
-    font-family: "Press Start 2P";
-    font-size: clamp(14px, 1.4rem, 1rem) !important;
-    line-height: 1.4;
-    letter-spacing: 0.5px;
+  .section-title {
+    margin-bottom: 1.5rem;
+    font-size: clamp(14px, 1.4vw, 18px);
   }
 
-  @media (max-width: 676px) {
-    .nes-container {
-      padding: 1.5rem 0;
-      border-color: transparent;
-    }
+  .section-title::before {
+    content: "▶ ";
+    color: var(--color-accent);
+  }
+
+  .all-posts-link {
+    margin-top: 2rem;
   }
 </style>
