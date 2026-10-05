@@ -1,0 +1,50 @@
+---
+import CategoryChip from "./CategoryChip.astro";
+import PostCard from "./PostCard.astro";
+import { categories, getPostCategories, type Category } from "../lib/categories";
+import { getPublishedPosts, type Post } from "../lib/posts";
+
+interface Props {
+  title: string;
+  posts: Post[];
+  currentCategory?: Category;
+}
+
+const { title, posts, currentCategory } = Astro.props;
+const publishedPosts = await getPublishedPosts();
+const usedCategories = categories.filter((category) =>
+  publishedPosts.some((post) => getPostCategories(post.data.tags).includes(category))
+);
+---
+
+<section class="nes-container is-dark with-title">
+  <h1 class="title">{title}</h1>
+
+  <nav class="category-filter" aria-label="Categorías">
+    <CategoryChip isCurrent={!currentCategory} />
+    {
+      usedCategories.map((category) => (
+        <CategoryChip category={category} isCurrent={category.id === currentCategory?.id} />
+      ))
+    }
+  </nav>
+
+  <ul class="post-grid">
+    {
+      posts.map((post) => (
+        <li>
+          <PostCard post={post} />
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+</style>

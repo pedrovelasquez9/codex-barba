@@ -1,0 +1,68 @@
+---
+import type { Category } from "../lib/categories";
+
+interface Props {
+  category?: Category;
+  isCurrent?: boolean;
+}
+
+const { category, isCurrent = false } = Astro.props;
+const href = category ? `/categoria/${category.id}` : "/blog";
+const label = category?.name ?? "Todas";
+const categoryStyle = category
+  ? `--category-color: ${category.color}; --category-text: ${category.textColor}`
+  : undefined;
+---
+
+<a
+  href={href}
+  class="category-chip"
+  aria-current={isCurrent ? "page" : undefined}
+  style={categoryStyle}
+>
+  {label}
+</a>
+
+<style>
+  .category-chip {
+    --category-color: var(--color-accent);
+    --category-text: var(--color-text);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow-pixel-small);
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .category-chip::before {
+    content: "";
+    flex: none;
+    width: 10px;
+    height: 10px;
+    background-color: var(--category-color);
+  }
+
+  .category-chip:hover {
+    color: var(--color-text);
+    text-decoration: none;
+    background-color: var(--color-surface-hover);
+  }
+
+  .category-chip[aria-current="page"] {
+    background-color: var(--category-color);
+    color: var(--category-text);
+    border-color: var(--color-text);
+  }
+
+  .category-chip[aria-current="page"]::before {
+    background-color: var(--category-text);
+  }
+</style>

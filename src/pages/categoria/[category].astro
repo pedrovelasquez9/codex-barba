@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostListing from "../../components/PostListing.astro";
+import { categories, getPostCategories, type Category } from "../../lib/categories";
+import { getPublishedPosts, type Post } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return categories
+    .map((category) => ({
+      category,
+      posts: posts.filter((post) => getPostCategories(post.data.tags).includes(category)),
+    }))
+    .filter(({ posts }) => posts.length > 0)
+    .map(({ category, posts }) => ({ params: { category: category.id }, props: { category, posts } }));
+}
+
+interface Props {
+  category: Category;
+  posts: Post[];
+}
+
+const { category, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={category.name}
+  description={`Artículos, diagramas y vídeos sobre ${category.name} en Codex Barba.`}
+>
+  <PostListing title={category.name} posts={posts} currentCategory={category} />
+</BaseLayout>

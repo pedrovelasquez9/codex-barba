@@ -1,5 +1,10 @@
 ---
+import "nes.css/css/nes.min.css";
+import "@fontsource/press-start-2p/latin-400.css";
+import "@fontsource/vt323/latin-400.css";
 import "../styles/global.css";
+import pixelFontUrl from "@fontsource/press-start-2p/files/press-start-2p-latin-400-normal.woff2?url";
+import bodyFontUrl from "@fontsource/vt323/files/vt323-latin-400-normal.woff2?url";
 import SideMenu from "../components/SideMenu.astro";
 
 interface Props {
@@ -43,18 +48,15 @@ const navLinks = [
     <meta property="og:url" content={pageUrl} />
     <meta property="og:image" content={imageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/webp" href="/logo 8bit.webp" />
-    <link rel="apple-touch-icon" href="/logo 8bit.webp" />
+    <link rel="canonical" href={pageUrl} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title="Codex Barba" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#212529" />
-    <link
-      href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href={pixelFontUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFontUrl} as="font" type="font/woff2" crossorigin />
     <script
       defer
       data-domain="codex-barba.com"
