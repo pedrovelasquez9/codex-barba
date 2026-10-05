@@ -89,6 +89,20 @@ const categorySections = categories
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setMenuOpen(false);
   });
+
+  document.addEventListener("astro:page-load", () => {
+    setMenuOpen(false);
+    const currentSlug = location.pathname.replaceAll("/", "");
+    sideMenu.querySelectorAll<HTMLAnchorElement>(".post-link").forEach((link) => {
+      const isCurrent = link.pathname.replaceAll("/", "") === currentSlug;
+      if (isCurrent) {
+        link.setAttribute("aria-current", "page");
+        link.closest("details")!.open = true;
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  });
 </script>
 
 <style>

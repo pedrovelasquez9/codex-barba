@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   integrations: [mdx(), sitemap()],
+  compressHTML: true,
   // Site configuration
   site: 'https://codex-barba.com', // Replace with your actual domain
   

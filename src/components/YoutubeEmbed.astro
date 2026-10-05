@@ -22,21 +22,23 @@ const { id, title = "Vídeo de YouTube" } = Astro.props;
 </div>
 
 <script>
-  document.querySelectorAll<HTMLElement>(".youtube-embed").forEach((embed) => {
-    embed.querySelector("button")!.addEventListener(
-      "click",
-      () => {
-        const player = document.createElement("iframe");
-        player.src = `https://www.youtube-nocookie.com/embed/${embed.dataset.videoId}?autoplay=1`;
-        player.title = embed.dataset.title!;
-        player.allow =
-          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        player.allowFullscreen = true;
-        embed.replaceChildren(player);
-        player.focus();
-      },
-      { once: true }
-    );
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLElement>(".youtube-embed").forEach((embed) => {
+      embed.querySelector("button")!.addEventListener(
+        "click",
+        () => {
+          const player = document.createElement("iframe");
+          player.src = `https://www.youtube-nocookie.com/embed/${embed.dataset.videoId}?autoplay=1`;
+          player.title = embed.dataset.title!;
+          player.allow =
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+          player.allowFullscreen = true;
+          embed.replaceChildren(player);
+          player.focus();
+        },
+        { once: true }
+      );
+    });
   });
 </script>
 
