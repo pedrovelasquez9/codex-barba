@@ -1,17 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SideMenu from "../components/SideMenu.astro";
 ---
 
 <BaseLayout title="Acerca de">
-  <SideMenu slot="side-menu" />
   <section class="nes-container is-dark with-title">
     <h1 class="title">Acerca de Codex Barba</h1>
 
     <div class="character-section">
-      <div>
-        <i class="nes-octocat animate"></i>
-      </div>
+      <img class="mascot" src="/logo 8bit beard.webp" alt="" width="96" height="133" />
       <div class="nes-balloon from-left is-dark">
         <p>
           Codex Barba es una wiki retro creada con amor por <a
@@ -33,7 +29,8 @@ import SideMenu from "../components/SideMenu.astro";
       </ul>
     </div>
 
-    <div class="character-section">
+    <div class="character-section is-reversed">
+      <img class="mascot" src="/logo 8bit beard.webp" alt="" width="96" height="133" />
       <div class="nes-balloon from-right is-dark">
         <h3>¿Quieres colaborar con el proyecto?</h3>
         <p>
@@ -47,24 +44,29 @@ import SideMenu from "../components/SideMenu.astro";
           </a>
         </p>
       </div>
-      <div>
-        <i class="nes-octocat animate"></i>
-      </div>
     </div>
 
-    <a href="/" class="nes-btn back-btn">← Ir al inicio</a>
+    <a href="/" class="nes-btn back-btn">« Ir al inicio</a>
   </section>
 </BaseLayout>
 
 <style>
   .character-section {
-    margin-top: 2rem;
     display: flex;
     align-items: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
   }
 
-  .skill p {
-    margin-bottom: 0.5rem;
+  .character-section.is-reversed {
+    flex-direction: row-reverse;
+  }
+
+  .mascot {
+    flex: none;
+    width: 96px;
+    height: auto;
+    image-rendering: pixelated;
   }
 
   .features {
@@ -76,16 +78,10 @@ import SideMenu from "../components/SideMenu.astro";
   }
 
   @media (max-width: 676px) {
-    .nes-container {
-      padding: 1.5rem 0;
-      border-color: transparent;
-    }
-
-    .character-section {
-      margin-top: 2rem;
-      display: flex;
-      align-items: flex-start;
+    .character-section,
+    .character-section.is-reversed {
       flex-direction: column-reverse;
+      align-items: flex-start;
     }
 
     .back-btn {
