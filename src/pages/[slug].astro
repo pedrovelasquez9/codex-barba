@@ -1,6 +1,8 @@
 ---
+import { render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CategoryChip from "../components/CategoryChip.astro";
+import ShareButton from "../components/ShareButton.astro";
 import { getPostCategories } from "../lib/categories";
 import {
   formatDate,
@@ -24,9 +26,10 @@ interface Props {
 const MIN_HEADINGS_FOR_TABLE_OF_CONTENTS = 4;
 
 const { post } = Astro.props;
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
+const postUrl = new URL(Astro.url.pathname, Astro.site).href;
 
-const tableOfContents = headings.filter((heading) => heading.depth <= 2);
+const tableOfContents = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 const showTableOfContents = tableOfContents.length >= MIN_HEADINGS_FOR_TABLE_OF_CONTENTS;
 
 const postCategories = getPostCategories(post.data.tags);
@@ -36,7 +39,7 @@ const categoryPosts = mainCategory
       .filter((categoryPost) => getPostCategories(categoryPost.data.tags).includes(mainCategory))
       .reverse()
   : [];
-const position = categoryPosts.findIndex((categoryPost) => categoryPost.slug === post.slug);
+const position = categoryPosts.findIndex((categoryPost) => categoryPost.id === post.id);
 const previousPost = position > 0 ? categoryPosts[position - 1] : undefined;
 const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
 ---
@@ -49,7 +52,7 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
   <div class="reading-progress" aria-hidden="true"></div>
 
   <article class="nes-container is-dark with-title" data-pagefind-body>
-    <p class="title" data-pagefind-meta="title">{post.data.title}</p>
+    <h1 class="title" data-pagefind-meta="title">{post.data.title}</h1>
 
     <div class="post-meta" data-pagefind-ignore>
       <p class="nes-text is-primary">
@@ -66,6 +69,7 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
           </div>
         )
       }
+      <ShareButton title={post.data.title} url={postUrl} />
     </div>
 
     {
@@ -111,21 +115,19 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
 </BaseLayout>
 
 <script>
-  document.querySelectorAll(".post-content pre").forEach((pre) => {
-    const copyButton = document.createElement("button");
-    copyButton.className = "copy-btn";
-    copyButton.type = "button";
-    copyButton.textContent = "Copiar";
-    copyButton.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(pre.querySelector("code")?.innerText ?? "");
-        copyButton.textContent = "¡Copiado!";
-      } catch {
-        copyButton.textContent = "No se pudo copiar";
-      }
-      setTimeout(() => (copyButton.textContent = "Copiar"), 1500);
+  import { copyWithFeedback } from "../lib/clipboard";
+
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll(".post-content pre").forEach((pre) => {
+      const copyButton = document.createElement("button");
+      copyButton.className = "copy-btn";
+      copyButton.type = "button";
+      copyButton.textContent = "Copiar";
+      copyButton.addEventListener("click", () =>
+        copyWithFeedback(copyButton, pre.querySelector("code")?.innerText ?? "")
+      );
+      pre.append(copyButton);
     });
-    pre.append(copyButton);
   });
 </script>
 
@@ -192,7 +194,7 @@ const nextPost = position >= 0 ? categoryPosts[position + 1] : undefined;
     list-style: none;
   }
 
-  .table-of-contents .depth-2 {
+  .table-of-contents .depth-3 {
     padding-left: 1.5rem;
   }
 

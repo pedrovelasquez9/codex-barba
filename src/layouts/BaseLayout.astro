@@ -5,6 +5,7 @@ import "@fontsource/vt323/latin-400.css";
 import "../styles/global.css";
 import pixelFontUrl from "@fontsource/press-start-2p/files/press-start-2p-latin-400-normal.woff2?url";
 import bodyFontUrl from "@fontsource/vt323/files/vt323-latin-400-normal.woff2?url";
+import { ClientRouter } from "astro:transitions";
 import SideMenu from "../components/SideMenu.astro";
 
 interface Props {
@@ -61,11 +62,13 @@ const navLinks = [
       defer
       data-domain="codex-barba.com"
       src="https://plausible.io/js/script.js"></script>
+    <ClientRouter />
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
     <div class="container">
       <div class="layout-grid">
-        <div class="side-column">
+        <div class="side-column" transition:persist="side-menu">
           {showSideMenu && <SideMenu />}
         </div>
 
@@ -98,7 +101,7 @@ const navLinks = [
             </nav>
           </header>
 
-          <main class="main-content">
+          <main id="main-content" class="main-content" tabindex="-1">
             <slot />
           </main>
 
@@ -116,6 +119,27 @@ const navLinks = [
 </html>
 
 <style>
+  .skip-link {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 1100;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-accent);
+    color: var(--color-text);
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+
+  .main-content:focus {
+    outline: none;
+  }
+
   .container {
     max-width: 1400px;
     margin: 0 auto;

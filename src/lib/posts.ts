@@ -7,11 +7,13 @@ const dateFormatter = new Intl.DateTimeFormat("es-ES", { dateStyle: "long", time
 
 export async function getPublishedPosts(): Promise<Post[]> {
   const posts = await getCollection("posts", ({ data }) => !data.draft);
-  return posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+  return posts.sort(
+    (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime() || a.id.localeCompare(b.id)
+  );
 }
 
 export function getPostSlug(post: Post): string {
-  return post.slug.split("/").pop() ?? post.slug;
+  return post.id.split("/").pop() ?? post.id;
 }
 
 export function getPostUrl(post: Post): string {
@@ -19,13 +21,14 @@ export function getPostUrl(post: Post): string {
 }
 
 export function getPostThumbnail(post: Post): string | undefined {
-  const youtubeId = post.body.match(/<YouTubeEmbed[^>]*?\bid="([^"]+)"/)?.[1];
+  const youtubeId = post.body?.match(/<YouTubeEmbed[^>]*?\bid="([^"]+)"/)?.[1];
   if (post.data.image) return post.data.image;
   return youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : undefined;
 }
 
 export function getReadingMinutes(post: Post): number {
-  return Math.max(1, Math.round(post.body.split(/\s+/).length / WORDS_PER_MINUTE));
+  const wordCount = post.body?.split(/\s+/).length ?? 0;
+  return Math.max(1, Math.round(wordCount / WORDS_PER_MINUTE));
 }
 
 export function formatDate(date: Date): string {
